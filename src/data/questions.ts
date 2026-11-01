@@ -1,0 +1,55 @@
+// Fictional ranking-criteria quiz. The rules below are invented for the prototype and are not real criteria.
+import type { TestQuestion } from '../engine/types';
+
+type Q = [prompt: string, options: string[], correct: number, explanation: string];
+
+const RAW: Q[] = [
+  ['A slider tail is 3 ms off the nearest snap divisor. Is this rankable?', ['Yes, under 5 ms is fine', 'No, every object must be snapped', 'Only on Easy difficulties', 'Only if the song has variable BPM'], 1, 'In Ranked Lab criteria every object must be snapped; the verifier treats any unsnap as unrankable.'],
+  ['The audio file is 256 kbps MP3. What should the mapper do?', ['Nothing, it is within limits', 'Re-encode to 192 kbps or lower', 'Switch to a WAV file', 'Ask a NAT member for an exemption'], 1, 'The audio limit is 192 kbps; higher bitrates must be re-encoded.'],
+  ['Two difficulties list different artists. What applies?', ['Metadata must match across difficulties', 'Only the top difficulty matters', 'It is allowed for guest difficulties', 'It is allowed if the source field matches'], 0, 'Metadata must be consistent across every difficulty in a set.'],
+  ['A map fails the Mapset Verifier but three BNs think the check is a false positive. What is the path forward?', ['Nominate normally and ignore it', 'Sign an override petition with written reasons', 'Ask the mapper to delete the difficulty', 'Wait for the verifier to be updated'], 1, 'Unrankable verifier results can only be bypassed by an override petition that NAT approve.'],
+  ['How many nominations does a map need before it becomes Qualified?', ['1', '2', '3', '5'], 2, 'Three nominations move a Pending map to Qualified.'],
+  ['How long does a map stay Qualified before it ranks, if nothing goes wrong?', ['7 days', '10 days', '15 days', '30 days'], 2, 'The qualified period is 15 days of unfrozen time.'],
+  ['A Qualified map receives two BN flags. What happens?', ['Nothing until a NAT member acts', 'A flag case opens and the map is frozen', 'The map is disqualified automatically', 'The map ranks early'], 1, 'Two distinct BN flags open a case and freeze the qualified clock.'],
+  ['You nominated a map. Can you shoot a star at it after it ranks?', ['Yes, once', 'Yes, up to three times', 'No, nominators cannot star their own nominations', 'Only with bonus stars'], 2, 'Casters cannot star maps they mapped, guested or nominated.'],
+  ['Which category should a map built mainly around demanding stream patterns usually be?', ['Mechanics', 'Level Design', 'Either; the mapper chooses', 'Neither; it must be Loved'], 2, 'The mapper picks the category; NAT give Mechanics a wide berth when judging misclassification.'],
+  ['When can a mapper change the category of their map?', ['Any time', 'Until the first nomination', 'Until it is Qualified', 'Only after a DQ'], 1, 'The category locks at the first nomination and unlocks again if the map is disqualified.'],
+  ['A Normal difficulty has two overlapping circles. How does the verifier rate this?', ['Unrankable', 'Warning', 'Not checked', 'Minor, auto-fixed'], 1, 'Overlaps in Normal are a warning: a modder should look, but it does not block nomination.'],
+  ['The background image is 3840×2160. What does the verifier report?', ['Unrankable', 'A warning to downscale', 'Nothing', 'A minor note about the file name'], 1, 'Large backgrounds are a warning in Ranked Lab criteria.'],
+  ['The preview point is missing. Can the map be nominated?', ['No, it is unrankable', 'Yes, it is a minor issue', 'Only after NAT approval', 'Only as Mechanics'], 1, 'A missing preview point is a minor issue.'],
+  ['What is the normal maximum number of nominations a BN can bank?', ['3', '5', '10', 'Unlimited'], 1, 'Allowance accrues +1 per day and caps at 5.'],
+  ['A BN had 3 nominated maps disqualified within one week. What happens?', ['Nothing', 'Their allowance accrues every 2 days (cooldown level 1)', 'They are removed immediately', 'They lose their stars'], 1, 'Excessive DQs put the nominator on an escalating cooldown.'],
+  ['A player reports a qualified map for a coordinated harassment campaign. NAT dismiss the case and mark the report abusive. What does the player get for a first strike?', ['A warning', 'A 24 h chat ban', 'A tournament ban', 'Nothing'], 0, 'Strike 1 is a warning; later strikes escalate.'],
+  ['How many player reports open a flag case on a qualified map?', ['10', '50', '100', '1,000'], 2, 'One hundred distinct player reports open a case.'],
+  ['A flag case is open on a map at qualified day 9. What happens to the qualified clock?', ['It keeps running', 'It pauses until the case is decided', 'It resets to 0', 'It jumps to day 15'], 1, 'An open case freezes the map; dismissal resumes the clock where it paused.'],
+  ['A map is disqualified. What happens to its nominations?', ['They carry over', 'They are voided and not refunded', 'They are refunded to the BNs', 'Only the last one is voided'], 1, 'DQ voids every nomination; spent allowance is not refunded.'],
+  ['A difficulty is mapped by a guest. Can the guest nominate the set?', ['Yes', 'No', 'Only if they are NAT', 'Only for the other difficulties'], 1, 'Guest mappers cannot nominate maps they contributed to.'],
+  ['Which of these is a valid reason to DQ for misclassified category?', ['The map is too hard', 'A map entered as Level Design is a straightforward farm map with no design intent', 'The mapper is new', 'The song is long'], 1, 'Misclassification is for maps clearly in the wrong category; give Level Design a narrow berth.'],
+  ['What happens to stars you shoot?', ['They are gone forever', 'Each one returns 7 days after you cast it', 'All return every Monday', 'They return when the map ranks'], 1, 'Stars work like hype: each one returns 7 days after it was cast.'],
+  ['A map you nominated ranks with zero DQs. What bonus do you receive?', ['+1 nomination', '+5 stars for a week', '+3 stars permanently', 'A badge'], 1, 'A clean rank gives each nominator +5 bonus stars that last a week.'],
+  ['A map you nominated ranks after exactly one DQ. What bonus do you receive?', ['None', '+3 stars', '+5 stars', '+10 stars'], 1, 'One DQ reduces the bonus to +3 stars.'],
+  ['Which maps can receive stars?', ['Any ranked map', 'Ranked Level Design maps', 'Qualified maps', 'Pending maps with nominations'], 1, 'Only ranked Level Design maps receive stars.'],
+  ['An offset differs by 6 ms on one difficulty. What is the verifier\'s rating?', ['Unrankable', 'Warning', 'Minor', 'Ignored'], 1, 'Offset differences are a warning in Ranked Lab criteria.'],
+  ['What does an override petition need before NAT review it?', ['1 signature', '2 signatures', '3 signatures with written reasons', 'A NAT signature'], 2, 'Three signatures, each with a reason, send the petition to NAT.'],
+  ['NAT have how long to decide an override petition?', ['3 days', '7 days', '10 days', '30 days'], 2, 'NAT have 10 days for petitions and flag cases.'],
+  ['A Pending map has had no activity for 28 days. What happens?', ['It is deleted', 'It goes to the graveyard', 'It is auto-nominated', 'Nothing'], 1, 'Idle WIP and Pending maps move to the graveyard; the mapper can revive them.'],
+  ['You want to vouch for two aspiring BNs this week. Can you?', ['Yes', 'No, one vouch per 15 days', 'Only if both are mappers', 'Only as NAT'], 1, 'Each BN can vouch for one user per 15 days.'],
+  ['How is a BN removed?', ['After 90 days of inactivity', 'By a 2/3 NAT vote', 'By a single NAT member', 'Automatically after 3 DQs'], 1, 'There is no activity requirement; removal takes a 2/3 NAT vote.'],
+  ['A slider in [Extra] starts 2 ms before its snap position. What should a modder suggest?', ['Leave it', 'Resnap the object', 'Delete the difficulty', 'Change the BPM'], 1, 'Any unsnap is unrankable; resnap it.'],
+  ['Hitsounds are inaudible on several key sliders. What should a BN do before nominating?', ['Nominate anyway', 'Ask the mapper to fix audibility', 'Flag the map', 'Report the mapper'], 1, 'Gameplay-relevant issues should be fixed before nomination.'],
+  ['A map has a 1/8 sliderstream section rated Level Design. A BN thinks it fits Mechanics better. What is the right step before nomination?', ['Disqualify it', 'Discuss with the mapper; the mapper picks the category', 'Change the category themselves', 'Flag it as abusive'], 1, 'Mappers choose the category until the first nomination.'],
+  ['Who can open a NAT flag case directly?', ['Any player', 'It opens when the flag threshold is reached', 'Only the mapper', 'Only admins'], 1, 'Cases open automatically at 2 BN flags or 100 player reports.'],
+  ['Which metadata field must stay identical in every difficulty?', ['Difficulty name', 'Artist and title', 'Creator notes', 'Tags only'], 1, 'Artist and title must match across the set.'],
+  ['A BN flags a map they nominated. Is this allowed?', ['Yes', 'No', 'Only once', 'Only as NAT'], 1, 'Nominators cannot flag maps they nominated.'],
+  ['When does a NAT invitation cycle run by default?', ['Every week', 'At the start of each season', 'Whenever a BN asks', 'Never'], 1, 'Invites go out each season to BNs in the top 25% by ratio and top 50% by activity.'],
+  ['A NAT candidate gets yes votes from 60% of BNs but only 30% of NAT. Are they accepted?', ['No, both must pass', 'Yes, either majority is enough', 'Only after a re-vote', 'Only if an admin approves'], 1, 'Either a BN majority or a NAT majority accepts the candidate.'],
+  ['A kiai section starts 1/4 beat late on one difficulty only. What is the best modding note?', ['Unrankable, must DQ', 'Suggest aligning kiai across difficulties', 'Ignore; kiai is cosmetic', 'Report to NAT'], 1, 'Cosmetic inconsistencies are suggestions, not blockers.'],
+];
+
+export const TEST_QUESTIONS: TestQuestion[] = RAW.map(([prompt, options, correctIndex, explanation], i) => ({
+  id: `q${i + 1}`,
+  prompt,
+  options,
+  correctIndex,
+  explanation,
+}));

@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-ink-950 text-slate-200 antialiased;
+    font-feature-settings: 'tnum' 1;
+  }
+  a {
+    @apply text-lab-rose hover:text-lab-pink;
+  }
+  ::selection {
+    @apply bg-lab-pink/40;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-ink-700 bg-ink-900/80 p-4;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-lab-pink/70 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-lab-pink text-ink-950 hover:bg-lab-rose disabled:bg-ink-700 disabled:text-slate-500;
+  }
+  .btn-secondary {
+    @apply btn border border-ink-600 bg-ink-800 text-slate-200 hover:bg-ink-700 disabled:text-slate-500 disabled:hover:bg-ink-800;
+  }
+  .btn-danger {
+    @apply btn bg-lab-red/90 text-ink-950 hover:bg-lab-red disabled:bg-ink-700 disabled:text-slate-500;
+  }
+  .btn-ghost {
+    @apply btn text-slate-300 hover:bg-ink-800 disabled:text-slate-600;
+  }
+  .input {
+    @apply w-full rounded-lg border border-ink-600 bg-ink-850 px-3 py-1.5 text-sm text-slate-100 placeholder:text-slate-500 focus:border-lab-pink/70 focus:outline-none;
+  }
+  .label {
+    @apply mb-1 block text-xs font-medium uppercase tracking-wide text-slate-400;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full border border-ink-600 bg-ink-800 px-2.5 py-0.5 text-xs text-slate-300;
+  }
+  .chip-on {
+    @apply border-lab-pink/60 bg-lab-pink/15 text-lab-rose;
+  }
+  .h1 {
+    @apply text-2xl font-bold text-white;
+  }
+  .h2 {
+    @apply text-lg font-semibold text-white;
+  }
+  .muted {
+    @apply text-slate-400;
+  }
+  .table-row {
+    @apply border-b border-ink-700/70 last:border-0;
+  }
+}
+
+/* Tables collapse to cards under 640 px. */
+@media (max-width: 639px) {
+  table.responsive thead {
+    display: none;
+  }
+  table.responsive,
+  table.responsive tbody,
+  table.responsive tr,
+  table.responsive td {
+    display: block;
+    width: 100%;
+  }
+  table.responsive tr {
+    @apply mb-2 rounded-lg border border-ink-700 bg-ink-850 p-2;
+  }
+  table.responsive td {
+    @apply flex justify-between gap-3 border-0 px-1 py-0.5 text-right;
+  }
+  table.responsive td::before {
+    content: attr(data-label);
+    @apply text-left text-xs uppercase tracking-wide text-slate-500;
+  }
+}
