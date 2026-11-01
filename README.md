@@ -2,7 +2,7 @@
 
 This branch (`osu-web-design`) restyles Ranked Lab after [osu-web](https://github.com/ppy/osu-web): its HSL section-hue colour system, component styles (nav, header, buttons, beatmapset panels, forum rows, status pills) and header artwork.
 
-**Licence.** Because it adapts osu-web's code, design and artwork, this branch is licensed under the GNU Affero General Public License v3.0 or later. See [LICENCE](LICENCE). Credit: osu-web, copyright (c) ppy Pty Ltd. If you host it, you must offer its complete source code to its users. Source: <https://github.com/MelonIs45/ranked-prototype>.
+**Licence.** Because it adapts osu-web's code, design and artwork, this branch is licensed under the GNU Affero General Public License v3.0 or later. See [LICENCE](LICENCE). Credit: osu-web, copyright (c) ppy Pty Ltd. If you host it, you must offer its complete source code to its users. Source: <https://github.com/MelonIs45/ranked-prototype/tree/osu-web-design>.
 
 **Not used.** The osu! and ppy names and logos (trademarks, not covered by the AGPL) and the Torus and Venera fonts (licensed separately to ppy). Nunito stands in for Torus.
 

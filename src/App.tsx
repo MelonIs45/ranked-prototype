@@ -63,7 +63,7 @@ export function App() {
             <Link to="/about#terms" className="text-slate-400 hover:text-white">Terms</Link>
             <Link to="/about#privacy" className="text-slate-400 hover:text-white">Privacy</Link>
             <Link to="/about#licence" className="text-slate-400 hover:text-white">Licence (AGPL-3.0)</Link>
-            <a href="https://github.com/MelonIs45/ranked-prototype" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-white">Source on GitHub</a>
+            <a href="https://github.com/MelonIs45/ranked-prototype/tree/osu-web-design" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-white">Source on GitHub</a>
           </div>
         </footer>
       </div>

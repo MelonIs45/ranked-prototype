@@ -63,8 +63,8 @@ export function AboutPage() {
         </p>
         <p>
           Under the AGPL, anyone who uses this site is entitled to its complete source code. It's on GitHub at{' '}
-          <a href="https://github.com/MelonIs45/ranked-prototype" target="_blank" rel="noreferrer">
-            github.com/MelonIs45/ranked-prototype
+          <a href="https://github.com/MelonIs45/ranked-prototype/tree/osu-web-design" target="_blank" rel="noreferrer">
+            github.com/MelonIs45/ranked-prototype/tree/osu-web-design
           </a>
           .
         </p>
