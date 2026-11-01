@@ -34,4 +34,4 @@ The router uses hash URLs (`/#/beatmaps`), so `dist/` works from any static host
 - **Bonus stars** are spent before weekly stars and don't return. Weekly stars return 7 days after each cast.
 - **Clock buttons** work for every persona, not only Admin, so the tour can fast-forward without switching personas.
 - **Pack snapshot date** is month end + 30 days (October's pack lands Dec 1).
-- Each interpretation in spec section 11 is a toggle under `interp` in the config editor, set to the spec's default.
+- Each interpretation in spec section 11 is a toggle under `interp` in the config editor, set to the spec's default. The spec's author confirmed all of these defaults on Nov 1, 2026.
