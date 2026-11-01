@@ -210,7 +210,6 @@ export function NATQueuePage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="h1">NAT queue</h1>
       <RoleHint hints={{ nat: `Flag cases and override petitions sorted by deadline; you have ${s.params.natReviewDays} days for each. Overdue items are red. NAT votes on candidates are required.` }} />
       <div className="grid gap-4 lg:grid-cols-[320px_1fr]">
         <div className="space-y-2">
@@ -224,18 +223,18 @@ export function NATQueuePage() {
               <button
                 key={id}
                 onClick={() => setParams({ item: id })}
-                className={cx(
-                  'block w-full rounded-xl border p-3 text-left transition-colors',
-                  selected && itemId(selected) === id ? 'border-lab-pink bg-ink-800' : 'border-ink-700 bg-ink-900 hover:bg-ink-850',
-                  overdue && 'border-lab-red/60',
-                )}
+                className={cx('forum-item block w-full text-left', selected && itemId(selected) === id && 'ring-1 ring-lab-pink')}
+                style={{ ['--stripe' as string]: `hsl(var(--hsl-${overdue ? 'red-2' : i.kind === 'case' ? 'blue-1' : 'orange-1'}))` }}
               >
+                <span className="forum-item-stripe" />
+                <span className="block min-w-0 flex-1">
                 <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-wider">
                   <span className={i.kind === 'case' ? 'text-lab-sky' : 'text-lab-amber'}>{i.kind === 'case' ? `Flag case · ${i.c.trigger === 'bn' ? 'BN flags' : 'player reports'}` : 'Override petition'}</span>
                   <span className={overdue ? 'text-lab-red' : 'muted'}>{overdue ? `overdue ${fmtDuration(s.now - deadline)}` : `${fmtDuration(deadline - s.now)} left`}</span>
                 </div>
                 <div className="mt-1 truncate font-medium text-white">{map.title}</div>
                 <div className="truncate text-xs muted">{map.artist}</div>
+                </span>
               </button>
             );
           })}

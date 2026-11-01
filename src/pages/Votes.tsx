@@ -152,7 +152,6 @@ export function VotesPage() {
   const targets = bnMembers(s).sort((a, b) => a.username.localeCompare(b.username));
   return (
     <div className="space-y-4">
-      <h1 className="h1">Votes</h1>
       <RoleHint
         hints={{
           bn: 'BN votes on NAT candidates are optional and tallied separately from NAT votes.',

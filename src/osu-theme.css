@@ -1,0 +1,91 @@
+/*
+ * Colour system ported from osu-web (resources/css/colors.less and layout.less).
+ * Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
+ * See the LICENCE file in the repository root for full licence text.
+ *
+ * Every surface and text colour derives from one section hue (--base-hue), set per page by
+ * the app the same way osu-web's section_to_hue_map() does: home purple, beatmaps blue,
+ * community pink, rankings green, help orange, admin red.
+ */
+
+:root {
+  --base-hue-default: 333;
+  --base-hue: var(--base-hue-override, var(--base-hue-default));
+  --base-hue-deg: calc(var(--base-hue) * 1deg);
+
+  /* osu!palette 2019v2: key -> saturation, lightness on the section hue. */
+  --hsl-p: var(--base-hue), 100%, 50%;
+  --hsl-h1: var(--base-hue), 100%, 70%;
+  --hsl-h2: var(--base-hue), 50%, 45%;
+  --hsl-c1: var(--base-hue), 40%, 100%;
+  --hsl-c2: var(--base-hue), 40%, 90%;
+  --hsl-l1: var(--base-hue), 40%, 80%;
+  --hsl-l2: var(--base-hue), 40%, 75%;
+  --hsl-l3: var(--base-hue), 40%, 70%;
+  --hsl-l4: var(--base-hue), 40%, 50%;
+  --hsl-d1: var(--base-hue), 20%, 35%;
+  --hsl-d2: var(--base-hue), 20%, 30%;
+  --hsl-d3: var(--base-hue), 20%, 25%;
+  --hsl-d4: var(--base-hue), 20%, 20%;
+  --hsl-d5: var(--base-hue), 20%, 15%;
+  --hsl-d6: var(--base-hue), 20%, 10%;
+  --hsl-f1: var(--base-hue), 10%, 60%;
+  --hsl-b1: var(--base-hue), 10%, 40%;
+  --hsl-b2: var(--base-hue), 10%, 30%;
+  --hsl-b3: var(--base-hue), 10%, 25%;
+  --hsl-b4: var(--base-hue), 10%, 20%;
+  --hsl-b5: var(--base-hue), 10%, 15%;
+  --hsl-b6: var(--base-hue), 10%, 10%;
+
+  /* "Basic" colour theme: fixed hues at four strengths. */
+  --hsl-pink-1: 333, 100%, 70%;
+  --hsl-pink-2: 333, 80%, 60%;
+  --hsl-pink-3: 333, 60%, 50%;
+  --hsl-purple-1: 255, 100%, 70%;
+  --hsl-purple-2: 255, 80%, 60%;
+  --hsl-blue-1: 200, 100%, 70%;
+  --hsl-blue-2: 200, 80%, 60%;
+  --hsl-blue-3: 200, 60%, 50%;
+  --hsl-green-1: 125, 100%, 70%;
+  --hsl-lime-1: 90, 100%, 70%;
+  --hsl-lime-3: 90, 60%, 50%;
+  --hsl-orange-1: 45, 100%, 70%;
+  --hsl-orange-3: 45, 60%, 50%;
+  --hsl-red-1: 360, 100%, 70%;
+  --hsl-red-2: 360, 80%, 60%;
+  --hsl-red-3: 360, 60%, 50%;
+  --hsl-red-4: 360, 40%, 30%;
+  --hsl-darkorange-1: 20, 100%, 70%;
+
+  /* Beatmapset status pills (layout.less). */
+  --beatmapset-status-colour-default: var(--hsl-b5);
+  --beatmapset-wip-bg-hsl: var(--hsl-darkorange-1);
+  --beatmapset-pending-bg-hsl: var(--hsl-orange-1);
+  --beatmapset-qualified-bg-hsl: var(--hsl-blue-1);
+  --beatmapset-ranked-bg-hsl: var(--hsl-lime-1);
+  --beatmapset-graveyard-bg-hsl: 0, 0%, 0%;
+
+  --forum-bg: hsl(var(--hsl-h1));
+  --forum-item-background-color: hsl(var(--hsl-b4));
+  --forum-item-background-color-hover: hsl(var(--hsl-b3));
+}
+
+/* Section hues (osu-web helpers.php section_to_hue_map). */
+[data-section='home'] {
+  --base-hue-default: 255;
+}
+[data-section='beatmaps'] {
+  --base-hue-default: 200;
+}
+[data-section='community'] {
+  --base-hue-default: 333;
+}
+[data-section='rankings'] {
+  --base-hue-default: 115;
+}
+[data-section='help'] {
+  --base-hue-default: 45;
+}
+[data-section='admin'] {
+  --base-hue-default: 0;
+}

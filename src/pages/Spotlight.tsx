@@ -45,7 +45,7 @@ export function SpotlightPage() {
   const prev = previousSeason(s.now, s.params);
   return (
     <div className="space-y-4">
-      <h1 className="h1">Seasonal spotlight · Best of {s.params.categoryNames.levelDesign}</h1>
+      <h2 className="h2">Best of {s.params.categoryNames.levelDesign} playlists</h2>
       <RoleHint hints={{ player: 'Every Best of Level Design map from the season\'s monthly packs. Play them all by season end for a badge.' }} />
       <div className="grid gap-4 lg:grid-cols-2">
         <Playlist season={cur} live />

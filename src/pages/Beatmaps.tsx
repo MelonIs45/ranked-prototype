@@ -100,7 +100,7 @@ export function BeatmapsPage() {
       </div>
       {(status === 'wip' || status === 'graveyard') && <p className="mb-3 text-xs muted">WIP and graveyard maps are listed across both categories (the mapper picks one when moving to Pending).</p>}
 
-      <div className="mb-4 grid gap-3 rounded-xl border border-ink-700 bg-ink-900/60 p-3 md:grid-cols-[auto_1fr]">
+      <div className="mb-4 grid gap-3 rounded bg-ink-900 p-3 shadow md:grid-cols-[auto_1fr]">
         {status === 'ranked' && (
           <div>
             <div className="label">Sort</div>
@@ -155,7 +155,7 @@ export function BeatmapsPage() {
         </p>
       )}
       {maps.length ? (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid gap-2.5 md:grid-cols-2">
           {maps.map((m) => (
             <MapCard key={m.id} map={m} starWindow={SORT_WINDOW[effectiveSort] ?? 'recent'} />
           ))}

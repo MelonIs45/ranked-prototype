@@ -51,6 +51,25 @@ export function AboutPage() {
         <p>The prototype is provided as is, without warranty of any kind. Don't rely on it for anything beyond exploring the proposal.</p>
       </Section>
 
+      <Section id="licence" title="Licence and credits">
+        <p>
+          This version of Ranked Lab is styled after osu-web, the open-source website by ppy Pty Ltd. Its colour system, component styles and header artwork are adapted
+          from osu-web under the GNU Affero General Public License v3.0, and this version is released under the same licence. The full licence text ships with the
+          source code in the LICENCE file.
+        </p>
+        <p>
+          The osu! and ppy names and logos are trademarks of ppy Pty Ltd and are not used here. The Torus and Venera typefaces are licensed separately to ppy, so this
+          version uses Nunito instead.
+        </p>
+        <p>
+          Under the AGPL, anyone who uses this site is entitled to its complete source code. It's on GitHub at{' '}
+          <a href="https://github.com/MelonIs45/ranked-prototype" target="_blank" rel="noreferrer">
+            github.com/MelonIs45/ranked-prototype
+          </a>
+          .
+        </p>
+      </Section>
+
       <Section id="privacy" title="Privacy">
         <p>
           Ranked Lab has no accounts, server or analytics. The simulated world, including anything you create or change, is stored only in your browser's local storage on this

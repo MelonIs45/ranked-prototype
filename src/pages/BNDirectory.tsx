@@ -17,7 +17,6 @@ export function BNDirectoryPage() {
     .sort((a, b) => Number(b.p.open) - Number(a.p.open) || a.u.username.localeCompare(b.u.username));
   return (
     <div>
-      <h1 className="h1 mb-1">BN directory</h1>
       <p className="mb-4 text-sm muted">Find a nominator whose genres, skillsets and category match your map.</p>
       <RoleHint
         hints={{

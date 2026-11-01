@@ -1,4 +1,23 @@
-# Ranked Lab
+# Ranked Lab (osu-web design branch)
+
+This branch (`osu-web-design`) restyles Ranked Lab after [osu-web](https://github.com/ppy/osu-web): its HSL section-hue colour system, component styles (nav, header, buttons, beatmapset panels, forum rows, status pills) and header artwork.
+
+**Licence.** Because it adapts osu-web's code, design and artwork, this branch is licensed under the GNU Affero General Public License v3.0 or later. See [LICENCE](LICENCE). Credit: osu-web, copyright (c) ppy Pty Ltd. If you host it, you must offer its complete source code to its users. Source: <https://github.com/MelonIs45/ranked-prototype>.
+
+**Not used.** The osu! and ppy names and logos (trademarks, not covered by the AGPL) and the Torus and Venera fonts (licensed separately to ppy). Nunito stands in for Torus.
+
+**Where things came from.**
+
+| Here | osu-web source |
+| --- | --- |
+| `src/osu-theme.css` | `resources/css/colors.less`, `layout.less`, `app/helpers.php` `section_to_hue_map()` |
+| `.btn-primary`, `.forum-item`, `.forum-item-stripe`, `.beatmapset-status` in `src/index.css` | `resources/css/bem/btn-osu-big.less`, `forum-item.less`, `forum-item-stripe.less`, `layout.less` |
+| `Header`, `PageHeader` in `src/components/Shell.tsx` | `resources/css/bem/nav2-header.less`, `header-v4.less` |
+| `MapCard` | `resources/css/bem/beatmapset-panel.less` |
+| `public/osu-web/` | `public/images/headers/*.jpg`, `public/images/layout/nav2-background-hue0.png` |
+
+---
+
 
 Clickable prototype of the ranked-section reform described in `Ranked Section Reform — Prototype Build Spec.md`. It runs entirely in the browser and keeps its world in localStorage, so it deploys as static files. Unofficial concept prototype: every user, song and artist is fictional.
 

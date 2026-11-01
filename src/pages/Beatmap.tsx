@@ -365,12 +365,12 @@ function StarHistory({ map }: { map: Beatmapset }) {
     <div className="h-44">
       <ResponsiveContainer>
         <AreaChart data={data} margin={{ left: -20, right: 8, top: 6 }}>
-          <CartesianGrid stroke="#463a40" vertical={false} />
-          <XAxis dataKey="day" tick={{ fill: '#ab9aa2', fontSize: 11 }} minTickGap={24} />
-          <YAxis allowDecimals={false} tick={{ fill: '#ab9aa2', fontSize: 11 }} />
-          <Tooltip contentStyle={{ background: '#30272c', border: '1px solid #584a51', borderRadius: 8 }} labelStyle={{ color: '#e6dbe0' }} />
-          <Area type="monotone" dataKey="total" name="All-time stars" stroke="#e8b84f" fill="#e8b84f22" strokeWidth={2} />
-          <Area type="monotone" dataKey="recent" name={`Last ${s.params.sort.recentWindowDays} d`} stroke="#ff66ab" fill="#ff66ab1a" strokeWidth={2} />
+          <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
+          <XAxis dataKey="day" tick={{ fill: 'hsl(200 10% 60%)', fontSize: 11 }} minTickGap={24} />
+          <YAxis allowDecimals={false} tick={{ fill: 'hsl(200 10% 60%)', fontSize: 11 }} />
+          <Tooltip contentStyle={{ background: 'hsl(var(--hsl-b4))', border: 'none', borderRadius: 8 }} labelStyle={{ color: '#fff' }} />
+          <Area type="monotone" dataKey="total" name="All-time stars" stroke="#ffd966" fill="#ffd96622" strokeWidth={2} />
+          <Area type="monotone" dataKey="recent" name={`Last ${s.params.sort.recentWindowDays} d`} stroke="#ff66aa" fill="#ff66aa1a" strokeWidth={2} />
         </AreaChart>
       </ResponsiveContainer>
     </div>

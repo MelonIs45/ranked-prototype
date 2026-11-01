@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { HashRouter, Link, Route, Routes, useLocation } from 'react-router-dom';
-import { ActivityDrawer, Header, Toasts, TourPanel } from './components/Shell';
+import { ActivityDrawer, Header, PageHeader, Toasts, TourPanel } from './components/Shell';
+import { sectionForPath } from './components/sections';
 import { AboutPage } from './pages/About';
 import { AdminPage } from './pages/Admin';
 import { BeatmapPage } from './pages/Beatmap';
@@ -21,6 +22,8 @@ function ScrollTop() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Section hue drives every colour (osu-web section_to_hue_map).
+    document.body.dataset.section = sectionForPath(pathname).id;
   }, [pathname]);
   return null;
 }
@@ -31,7 +34,8 @@ export function App() {
       <ScrollTop />
       <div className="flex min-h-screen flex-col">
         <Header />
-        <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
+        <PageHeader />
+        <main className="mx-auto w-full max-w-[1000px] flex-1 px-4 py-6">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/beatmaps" element={<BeatmapsPage />} />
@@ -51,13 +55,15 @@ export function App() {
             <Route path="*" element={<div className="card">Page not found.</div>} />
           </Routes>
         </main>
-        <footer className="border-t border-ink-800">
-          <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-5 gap-y-1 px-4 py-4 text-xs text-slate-500">
+        <footer className="bg-ink-900">
+          <div className="mx-auto flex max-w-[1000px] flex-wrap items-center gap-x-5 gap-y-1 px-4 py-4 text-xs text-slate-500">
             <span>Ranked Lab · Unofficial concept prototype · all users, songs and artists are fictional</span>
             <span className="flex-1" />
             <Link to="/about" className="text-slate-400 hover:text-white">About</Link>
             <Link to="/about#terms" className="text-slate-400 hover:text-white">Terms</Link>
             <Link to="/about#privacy" className="text-slate-400 hover:text-white">Privacy</Link>
+            <Link to="/about#licence" className="text-slate-400 hover:text-white">Licence (AGPL-3.0)</Link>
+            <a href="https://github.com/MelonIs45/ranked-prototype" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-white">Source on GitHub</a>
           </div>
         </footer>
       </div>

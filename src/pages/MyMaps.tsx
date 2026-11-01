@@ -143,7 +143,7 @@ export function MyMapsPage() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="h1">My maps</h1>
+        <span className="muted">Your maps across every status.</span>
         <button className="btn-primary" onClick={() => setCreating(true)}>
           + Create map
         </button>

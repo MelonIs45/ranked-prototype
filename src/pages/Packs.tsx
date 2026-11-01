@@ -34,7 +34,6 @@ export function PacksPage() {
   const ldName = s.params.categoryNames.levelDesign;
   return (
     <div className="space-y-4">
-      <h1 className="h1">Packs</h1>
       <RoleHint hints={{ player: `Each month's ${ldName} maps are snapshotted ${s.params.pack.snapshotDelayDays} days after month end. The top quarter is labelled "Best of ${ldName}".` }} />
       <Tabs<'ld' | 'fa' | 'pool'>
         value={tab}

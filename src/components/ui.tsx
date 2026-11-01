@@ -12,7 +12,7 @@ export function Avatar({ user, size = 24 }: { user: User | undefined; size?: num
   if (!user) return null;
   return (
     <span
-      className="inline-flex shrink-0 select-none items-center justify-center rounded-full font-bold text-ink-950"
+      className="inline-flex shrink-0 select-none items-center justify-center rounded font-extrabold text-ink-950"
       style={{ width: size, height: size, background: user.avatarColor, fontSize: size * 0.42 }}
       title={user.username}
       aria-hidden
@@ -55,19 +55,11 @@ export function AvatarStack({ ids, max = 5, link = true }: { ids: Id[]; max?: nu
   );
 }
 
-const statusColors: Record<MapStatus, string> = {
-  wip: 'bg-ink-950/80 text-slate-300 border-slate-500/50',
-  pending: 'bg-ink-950/80 text-lab-amber border-lab-amber/50',
-  qualified: 'bg-ink-950/80 text-lab-sky border-lab-sky/50',
-  ranked: 'bg-ink-950/80 text-lab-mint border-lab-mint/50',
-  graveyard: 'bg-ink-950/80 text-slate-400 border-ink-500',
-};
-
 export function StatusBadge({ status, frozen }: { status: MapStatus; frozen?: boolean }) {
   return (
-    <span className={cx('inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide', statusColors[status])}>
+    <span className={cx('beatmapset-status', `beatmapset-status--${status}`)}>
       {status === 'wip' ? 'WIP' : status}
-      {frozen && <span title="Frozen by an open NAT case">· frozen</span>}
+      {frozen && <span title="Frozen by an open NAT case">&nbsp;· frozen</span>}
     </span>
   );
 }
@@ -76,7 +68,7 @@ export function CategoryBadge({ category }: { category: Category | null }) {
   const s = useLabState();
   if (!category) return <span className="chip">No category</span>;
   return (
-    <span className={cx('inline-flex shrink-0 items-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[11px] font-semibold', category === 'level_design' ? 'bg-lab-violet text-ink-950' : 'bg-lab-sky text-ink-950')}>
+    <span className="beatmapset-status shrink-0 whitespace-nowrap" style={{ background: `hsl(var(--hsl-${category === 'level_design' ? 'purple' : 'blue'}-1))` }}>
       {categoryName(s.params, category)}
     </span>
   );
@@ -224,13 +216,12 @@ export function Tabs<T extends string>({ value, onChange, options }: { value: T;
 }
 
 /** Generated cover: one flat, muted tone per map plus its id in small mono type. */
-const COVER_TONES = ['#4a3442', '#3b3550', '#2f4256', '#4d3a3a', '#3d4a3c', '#523a4c', '#41394e', '#33464c'];
 
 export function MapCover({ map, className }: { map: Beatmapset; className?: string }) {
   let h = 0;
   for (const c of map.id + map.title) h = (h * 31 + c.charCodeAt(0)) >>> 0;
   return (
-    <div className={cx('relative overflow-hidden border-b border-ink-700', className)} style={{ background: COVER_TONES[h % COVER_TONES.length] }} aria-hidden>
+    <div className={cx('relative overflow-hidden', className)} style={{ background: `linear-gradient(135deg, hsl(${h % 360} 45% 38%), hsl(${(h + 50) % 360} 40% 22%))` }} aria-hidden>
       <span className="absolute bottom-1.5 right-2 font-mono text-[10px] uppercase tracking-widest text-white/40">#{map.id.replace(/^m/, '')}</span>
     </div>
   );

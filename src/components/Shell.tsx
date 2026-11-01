@@ -1,5 +1,6 @@
 import { useMemo, useState, type ReactNode } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { SECTIONS, sectionForPath, titleForPath, visiblePages } from './sections';
 import { DAY, HOUR, fmtDateTime, fmtDuration, fmtRelative, primaryRole, seasonFor, type EventType, type User } from '../engine';
 import { useLab, useLabState } from '../store';
 import { TOUR, type TourApi } from '../tour/steps';
@@ -126,77 +127,108 @@ export function RoleSwitcher() {
 }
 
 // ---------------------------------------------------------------------------
-// Navigation
-
-interface NavItem {
-  to: string;
-  label: string;
-  show?: (u: User) => boolean;
-}
-
-const NAV: NavItem[] = [
-  { to: '/', label: 'Home' },
-  { to: '/beatmaps', label: 'Beatmaps' },
-  { to: '/me/maps', label: 'My maps', show: (u) => !u.isAdmin },
-  { to: '/bn', label: 'BN', show: (u) => u.isBN || u.isNAT },
-  { to: '/bn/apply', label: 'Apply', show: (u) => !u.isBN && !u.isNAT && !u.isAdmin },
-  { to: '/bn/directory', label: 'BN directory' },
-  { to: '/nat', label: 'NAT', show: (u) => u.isNAT },
-  { to: '/votes', label: 'Votes', show: (u) => u.isBN || u.isNAT || u.isAdmin },
-  { to: '/rewards', label: 'Rewards' },
-  { to: '/packs', label: 'Packs' },
-  { to: '/spotlight', label: 'Spotlight' },
-  { to: '/admin', label: 'Admin', show: (u) => u.isAdmin },
-];
+// Navigation (osu-web nav2) and section header (osu-web header-v4)
 
 export function Header() {
   const me = useMeUser();
+  const { pathname } = useLocation();
   const openDrawer = useLab((st) => st.openDrawer);
   const setTour = useLab((st) => st.setTour);
   const [menu, setMenu] = useState(false);
-  const items = NAV.filter((n) => !n.show || n.show(me));
+  const current = sectionForPath(pathname);
+  const sections = SECTIONS.filter((x) => !x.show || x.show(me)).map((x) => ({ ...x, first: visiblePages(x, me)[0] })).filter((x) => x.first);
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-700 bg-ink-900">
-      <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-2">
-        <button className="btn-ghost px-2 lg:hidden" onClick={() => setMenu((x) => !x)} aria-label="Menu">
-          Menu
-        </button>
-        <Link to="/" className="flex items-center gap-2 font-bold text-white hover:text-white">
-          <span className="grid h-7 w-7 place-items-center bg-lab-pink font-mono text-xs font-semibold text-ink-950">RL</span>
-          <span className="hidden sm:inline">Ranked Lab</span>
-        </Link>
-        <nav className="hidden flex-1 items-center gap-0.5 lg:flex">
-          {items.map((n) => (
-            <NavLink key={n.to} to={n.to} end={n.to === '/' || n.to === '/bn'} className={({ isActive }) => cx('border-b-2 px-2 py-1 text-sm', isActive ? 'border-lab-pink text-white' : 'border-transparent text-slate-300 hover:text-white')}>
-              {n.label}
-            </NavLink>
-          ))}
-        </nav>
-        <div className="ml-auto flex items-center gap-2">
-          <button className="btn-ghost px-2 text-sm" onClick={() => setTour({ active: true, dismissed: false })} title="Guided demo tour">
-            Tour
+    <header className="relative z-40">
+      <div className="relative bg-ink-900">
+        {/* nav2-header__triangles: the red strip is hue-rotated to the section colour. */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-bottom bg-repeat-x opacity-40"
+          style={{ backgroundImage: 'url(./osu-web/layout/nav2-background-hue0.png)', filter: 'hue-rotate(var(--base-hue-deg)) saturate(0.6)' }}
+          aria-hidden
+        />
+        <div className="relative mx-auto flex h-[70px] max-w-[1000px] items-center gap-4 px-4">
+          <button className="btn-ghost px-2 lg:hidden" onClick={() => setMenu((x) => !x)} aria-label="Menu">
+            Menu
           </button>
-          <button className="btn-ghost px-2 text-sm" onClick={() => openDrawer()} title="Activity feed">
-            Activity
-          </button>
-          <RoleSwitcher />
+          <Link to="/" className="flex items-center gap-2 text-white hover:text-white" aria-label="Ranked Lab home">
+            <span className="grid h-11 w-11 place-items-center rounded-xl bg-lab-pink text-base font-extrabold text-ink-950">RL</span>
+          </Link>
+          <nav className="hidden flex-1 items-center gap-5 lg:flex">
+            {sections.map((x) => (
+              <Link key={x.id} to={x.first.to} className={cx('relative py-2 text-[15px] lowercase', x.id === current.id ? 'text-white' : 'text-slate-200 hover:text-white')}>
+                {x.label}
+                {x.id === current.id && <span className="absolute inset-x-0 -bottom-0.5 h-[3px] rounded-full" style={{ background: `hsl(${x.menuColour})` }} />}
+              </Link>
+            ))}
+          </nav>
+          <div className="ml-auto flex items-center gap-2">
+            <button className="btn-ghost px-2" onClick={() => setTour({ active: true, dismissed: false })} title="Guided demo tour">
+              tour
+            </button>
+            <button className="btn-ghost px-2" onClick={() => openDrawer()} title="Activity feed">
+              activity
+            </button>
+            <RoleSwitcher />
+          </div>
         </div>
       </div>
-      <div className="border-t border-ink-800 bg-ink-900/60">
-        <div className="mx-auto max-w-7xl px-4 py-1.5">
+      <div className="bg-ink-950">
+        <div className="mx-auto max-w-[1000px] px-4 py-1.5">
           <ClockWidget />
         </div>
       </div>
       {menu && (
-        <nav className="grid grid-cols-2 gap-1 border-t border-ink-700 p-3 lg:hidden" onClick={() => setMenu(false)}>
-          {items.map((n) => (
-            <NavLink key={n.to} to={n.to} end={n.to === '/' || n.to === '/bn'} className={({ isActive }) => cx('rounded-md px-3 py-2 text-sm', isActive ? 'bg-ink-800 text-white' : 'text-slate-300')}>
-              {n.label}
-            </NavLink>
-          ))}
+        <nav className="grid grid-cols-2 gap-1 bg-ink-900 p-3 shadow-lg lg:hidden" onClick={() => setMenu(false)}>
+          {sections.flatMap((x) =>
+            visiblePages(x, me).map((p) => (
+              <NavLink key={p.to} to={p.to} end className={({ isActive }) => cx('rounded px-3 py-2 text-sm', isActive ? 'bg-ink-800 text-white' : 'text-slate-300')}>
+                <span className="text-xs lowercase muted">{x.label} · </span>
+                {p.label}
+              </NavLink>
+            )),
+          )}
         </nav>
       )}
     </header>
+  );
+}
+
+export function PageHeader() {
+  const me = useMeUser();
+  const { pathname } = useLocation();
+  const section = sectionForPath(pathname);
+  const tabs = visiblePages(section, me);
+  return (
+    <div className="shadow">
+      <div className="relative overflow-hidden" style={{ background: 'hsl(var(--hsl-d5))' }}>
+        {/* header-v4__bg: artwork at 70% opacity, faded into the band at both edges. */}
+        <div className="absolute inset-y-0 left-1/2 w-full max-w-[1200px] -translate-x-1/2 bg-cover bg-center opacity-70" style={{ backgroundImage: `url(./osu-web/headers/${section.image})` }} aria-hidden>
+          <div className="h-full w-full" style={{ background: 'linear-gradient(to right, hsl(var(--hsl-d5)), transparent 200px, transparent calc(100% - 200px), hsl(var(--hsl-d5)))' }} />
+        </div>
+        <div className="relative mx-auto flex h-[90px] max-w-[1000px] items-end px-4 pb-4">
+          <div className="flex items-center gap-3">
+            <span className="grid h-9 w-9 place-items-center rounded-full border-2 text-sm font-extrabold lowercase text-white" style={{ borderColor: 'hsl(var(--hsl-h1))' }} aria-hidden>
+              {section.label[0]}
+            </span>
+            <h1 className="text-[24px] font-normal lowercase text-white">{titleForPath(pathname, section)}</h1>
+          </div>
+        </div>
+      </div>
+      <div className="bg-ink-850">
+        <nav className="mx-auto flex max-w-[1000px] gap-5 overflow-x-auto px-4">
+          {tabs.map((t) => (
+            <NavLink key={t.to} to={t.to} end className={({ isActive }) => cx('relative whitespace-nowrap py-2.5 text-sm', isActive ? 'font-bold text-white' : 'text-slate-300 hover:text-white')}>
+              {({ isActive }) => (
+                <>
+                  {t.label}
+                  {isActive && <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-lab-pink" />}
+                </>
+              )}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
+    </div>
   );
 }
 

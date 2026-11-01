@@ -31,7 +31,7 @@ export function HomePage() {
           admin: 'Use the clock to fast-forward, and the admin panel to change rules live or simulate crowd behaviour.',
         }}
       />
-      <section className="grid gap-4 xl:grid-cols-[1fr_260px]">
+      <section className="grid gap-4 md:grid-cols-[1fr_240px]">
         <div>
           <div className="mb-3 flex items-end justify-between">
             <div>
@@ -43,7 +43,7 @@ export function HomePage() {
             </Link>
           </div>
           {top.length ? (
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
+            <div className="grid gap-2">
               {top.map((m, i) => (
                 <MapCard key={m.id} map={m} rank={i + 1} />
               ))}
@@ -75,7 +75,7 @@ export function HomePage() {
         ].map(([cat, maps]) => (
           <div key={cat as string}>
             <h2 className="h2 mb-2">Latest ranked · {cat === 'level_design' ? s.params.categoryNames.levelDesign : s.params.categoryNames.mechanics}</h2>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-2">
               {(maps as typeof latestLD).map((m) => (
                 <MapCard key={m.id} map={m} />
               ))}
@@ -86,13 +86,13 @@ export function HomePage() {
 
       <section>
         <h2 className="h2 mb-3">What changes in this proposal</h2>
-        <ol className="grid border-t border-ink-700 lg:grid-cols-2 lg:gap-x-10">
-          {CHANGES.map(([t, d], i) => (
-            <li key={t} className="flex gap-4 border-b border-ink-700 py-3">
-              <span className="w-6 shrink-0 font-mono text-sm text-slate-500">{String(i + 1).padStart(2, '0')}</span>
+        <ol className="space-y-0.5">
+          {CHANGES.map(([t, d]) => (
+            <li key={t} className="forum-item">
+              <span className="forum-item-stripe" />
               <div>
-                <div className="font-semibold text-white">{t}</div>
-                <p className="text-sm muted">{d}</p>
+                <div className="text-lg text-white">{t}</div>
+                <p className="text-[13px] text-slate-300">{d}</p>
               </div>
             </li>
           ))}

@@ -1,3 +1,5 @@
+// Beatmap card in the shape of osu-web's beatmapset-panel: cover behind, a play area on the
+// left, and the info block over a b4 gradient. Copyright (c) ppy Pty Ltd; AGPL-3.0, see LICENCE.
 import { Link } from 'react-router-dom';
 import {
   activeNominations,
@@ -13,9 +15,17 @@ import {
   type StarWindow,
 } from '../engine';
 import { useLabState } from '../store';
-import { AvatarStack, CategoryBadge, cx, fmtCompact, MapCover, StatusBadge } from './ui';
+import { AvatarStack, CategoryBadge, fmtCompact, MapCover, StatusBadge } from './ui';
 
 export const WINDOW_LABEL: Record<StarWindow, string> = { recent: '30 d', season: 'season', year: 'year', all: 'all time' };
+
+function StatItem({ label, value, title }: { label: string; value: string | number; title?: string }) {
+  return (
+    <span className="whitespace-nowrap" title={title}>
+      <span className="font-bold text-white">{value}</span> <span className="text-slate-400">{label}</span>
+    </span>
+  );
+}
 
 export function MapCard({ map, starWindow = 'recent', rank }: { map: Beatmapset; starWindow?: StarWindow; rank?: number }) {
   const s = useLabState();
@@ -23,57 +33,42 @@ export function MapCard({ map, starWindow = 'recent', rank }: { map: Beatmapset;
   const noms = activeNominations(s, map.id);
   const best = isBestOfLD(s, map.id);
   return (
-    <Link to={`/beatmaps/${map.id}`} className="group block overflow-hidden rounded-xl border border-ink-700 bg-ink-900 text-slate-200 transition-colors hover:border-lab-pink/50 hover:text-slate-200">
-      <MapCover map={map} className="h-20" />
-      <div className="relative -mt-16 flex items-start justify-between gap-2 px-3">
-        <div className="flex flex-wrap gap-1">
-          <StatusBadge status={map.status} frozen={map.frozen} />
-          {map.isFA && <span className="rounded-md bg-lab-amber/90 px-1.5 py-0.5 text-[11px] font-bold text-ink-950">FA</span>}
-          {best && <span className="rounded-md bg-lab-pink/90 px-1.5 py-0.5 text-[11px] font-bold text-ink-950">Best of LD</span>}
-        </div>
-        {rank !== undefined && <span className="rounded-md bg-ink-950/80 px-2 py-0.5 text-sm font-bold text-white">#{rank}</span>}
+    <Link to={`/beatmaps/${map.id}`} className="group relative block h-[120px] overflow-hidden rounded-xl bg-ink-700 text-slate-200 shadow transition-transform hover:text-slate-200">
+      <MapCover map={map} className="absolute inset-0" />
+      {/* beatmapset-panel__play: darkens on hover like osu-web's preview button. */}
+      <div className="absolute inset-y-0 left-0 flex w-[90px] items-center justify-center transition-colors group-hover:bg-ink-950/70">
+        {rank !== undefined && <span className="text-3xl font-extrabold text-white drop-shadow">#{rank}</span>}
       </div>
-      <div className="relative mt-7 px-3 pb-3">
-        <div className="truncate text-[15px] font-semibold text-white group-hover:text-lab-rose">{map.title}</div>
-        <div className="truncate text-sm muted">{map.artist}</div>
-        <div className="mt-1 flex items-center gap-2 text-xs muted">
-          <span className="truncate">mapped by {s.users[map.mapperId]?.username}</span>
-          <CategoryBadge category={map.category} />
+      <div
+        className="relative ml-[90px] flex h-full flex-col justify-between rounded-xl px-3 py-2 transition-colors"
+        style={{ background: 'linear-gradient(to right, hsl(var(--hsl-b4)), hsla(var(--hsl-b4), 0.85))' }}
+      >
+        <div className="min-w-0">
+          <div className="truncate text-[15px] font-bold text-white group-hover:text-lab-rose">{map.title}</div>
+          <div className="truncate text-[13px] text-slate-300">by {map.artist}</div>
+          <div className="truncate text-xs text-slate-400">
+            mapped by <span className="font-semibold text-slate-200">{s.users[map.mapperId]?.username}</span>
+          </div>
         </div>
-        <div className="mt-2 grid grid-cols-3 gap-1 text-[11px] leading-tight">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs">
           {showStars ? (
-            <div title={`Stars cast in the ${WINDOW_LABEL[starWindow]} window`}>
-              <div className="text-sm font-semibold text-lab-amber">{starCount(s, map.id, starWindow)}</div>
-              <div className="muted">stars, {WINDOW_LABEL[starWindow]}</div>
-            </div>
+            <StatItem label={`stars ${WINDOW_LABEL[starWindow]}`} value={starCount(s, map.id, starWindow)} title="Stars cast in this window" />
           ) : (
-            <div>
-              <div className="text-sm font-semibold text-white">{maxStarRating(map).toFixed(2)}</div>
-              <div className="muted">top SR</div>
-            </div>
+            <StatItem label="SR" value={maxStarRating(map).toFixed(2)} />
           )}
-          <div title="Total play time across all plays">
-            <div className="text-sm font-semibold text-white">{fmtCompact(playTimeHours(s, map.id))} h</div>
-            <div className="muted">played</div>
-          </div>
-          <div title="Distinct users who downloaded">
-            <div className="text-sm font-semibold text-white">{fmtCompact(uniqueDownloads(s, map.id))}</div>
-            <div className="muted">unique DLs</div>
-          </div>
+          <StatItem label="h played" value={fmtCompact(playTimeHours(s, map.id))} />
+          <StatItem label="DLs" value={fmtCompact(uniqueDownloads(s, map.id))} title="Unique downloads" />
+          {map.status === 'pending' && <StatItem label="noms" value={`${noms.length}/${s.params.nominationsRequired}`} />}
+          {map.status === 'qualified' && <span className="text-lab-sky">{map.frozen ? 'frozen' : `ranks in ${fmtDuration(qualifiedRemainingMs(s, map))}`}</span>}
         </div>
-        <div className="mt-2 flex items-center justify-between gap-2 text-xs">
-          <span className="flex items-center gap-1.5">
-            <span className="muted">Noms</span>
-            <AvatarStack ids={noms.map((n) => n.userId)} max={3} link={false} />
-          </span>
-          {map.status === 'qualified' && (
-            <span className={cx(map.frozen ? 'text-lab-sky' : 'muted')}>{map.frozen ? 'Frozen' : `ranks in ${fmtDuration(qualifiedRemainingMs(s, map))}`}</span>
-          )}
-          {map.status === 'pending' && (
-            <span className="muted">
-              {noms.length}/{s.params.nominationsRequired}
-            </span>
-          )}
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex min-w-0 flex-wrap gap-1">
+            <StatusBadge status={map.status} frozen={map.frozen} />
+            <CategoryBadge category={map.category} />
+            {map.isFA && <span className="beatmapset-status" style={{ background: 'hsl(var(--hsl-orange-1))' }}>FA</span>}
+            {best && <span className="beatmapset-status" style={{ background: 'hsl(var(--hsl-pink-1))' }}>Best of LD</span>}
+          </div>
+          <AvatarStack ids={noms.map((n) => n.userId)} max={3} link={false} />
         </div>
       </div>
     </Link>

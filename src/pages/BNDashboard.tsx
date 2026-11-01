@@ -157,7 +157,6 @@ export function BNDashboardPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="h1">BN dashboard</h1>
       <RoleHint hints={{ bn: 'Nominations accrue +1 per day up to the cap. Stars return 7 days after you cast them; bonus stars expire.', nat: 'As NAT you also nominate and get 25 stars a week. Your review queue is under NAT.' }} />
       <NatInviteCard key={me.id} />
       <div className="grid gap-4 lg:grid-cols-2">

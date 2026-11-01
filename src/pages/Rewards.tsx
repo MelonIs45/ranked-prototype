@@ -5,7 +5,7 @@ import { Card, cx, Empty, Tabs, UserLink, useMeUser } from '../components/ui';
 import { DAY, fmtDate, leaderboard, nominatorIdsOf, seasonFor, type LeaderRow, type Season } from '../engine';
 import { useLabState } from '../store';
 
-const LINE_COLORS = ['#ff66ab', '#3a8fd0', '#a58bd6', '#94c76a', '#e8b84f'];
+const LINE_COLORS = ['#ff66aa', '#66ccff', '#8c66ff', '#b3ff66', '#ffd966'];
 
 function Board({ rows, cutoff }: { rows: LeaderRow[]; cutoff: number }) {
   const me = useMeUser();
@@ -58,10 +58,10 @@ function Trend({ season, board }: { season: Season; board: 'main' | 'fa' }) {
     <div className="h-56">
       <ResponsiveContainer>
         <LineChart data={data.out} margin={{ left: -20, right: 8, top: 6 }}>
-          <CartesianGrid stroke="#463a40" vertical={false} />
-          <XAxis dataKey="day" tick={{ fill: '#ab9aa2', fontSize: 11 }} minTickGap={24} />
-          <YAxis allowDecimals={false} tick={{ fill: '#ab9aa2', fontSize: 11 }} />
-          <Tooltip contentStyle={{ background: '#30272c', border: '1px solid #584a51', borderRadius: 8 }} />
+          <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
+          <XAxis dataKey="day" tick={{ fill: 'hsl(200 10% 60%)', fontSize: 11 }} minTickGap={24} />
+          <YAxis allowDecimals={false} tick={{ fill: 'hsl(200 10% 60%)', fontSize: 11 }} />
+          <Tooltip contentStyle={{ background: 'hsl(var(--hsl-b4))', border: 'none', borderRadius: 8 }} />
           <Legend wrapperStyle={{ fontSize: 12 }} />
           {data.names.map((n, i) => (
             <Line key={n} type="stepAfter" dataKey={n} stroke={LINE_COLORS[i]} dot={false} strokeWidth={2} />
@@ -93,7 +93,6 @@ export function RewardsPage() {
   const pastBadges = Object.values(s.badges).filter((b) => b.season === view && b.type === (board === 'main' ? 'bn_top_main' : 'bn_top_fa')).sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0));
   return (
     <div className="space-y-4">
-      <h1 className="h1">Nominator rewards</h1>
       <RoleHint
         hints={{
           player: 'Every star cast at a Level Design map gives +1 point to each of its nominators.',

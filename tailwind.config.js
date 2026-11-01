@@ -1,37 +1,46 @@
 /** @type {import('tailwindcss').Config} */
 
-// Plum-grey surfaces with pink links and blue primary buttons. Corners are near-square and
-// nothing casts a shadow: hierarchy comes from borders, spacing and type weight.
-const square = { none: '0', sm: '2px', DEFAULT: '2px', md: '2px', lg: '2px', xl: '3px', '2xl': '3px', '3xl': '3px', full: '3px' };
-const flat = { sm: 'none', DEFAULT: 'none', md: 'none', lg: 'none', xl: 'none', '2xl': 'none', inner: 'none' };
+// Tokens map onto osu-web's HSL variables (src/osu-theme.css), so every surface and text
+// colour follows the current section hue. Radii and shadows follow osu-web's
+// @border-radius-base (4px), @border-radius--large (10px) and .default-box-shadow().
+const v = (name) => `hsla(var(--hsl-${name}), <alpha-value>)`;
 
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   darkMode: 'class',
   theme: {
-    borderRadius: square,
-    boxShadow: flat,
+    borderRadius: { none: '0', sm: '2px', DEFAULT: '4px', md: '4px', lg: '4px', xl: '10px', '2xl': '10px', '3xl': '20px', full: '9999px' },
+    boxShadow: {
+      none: 'none',
+      sm: '0 1px 3px rgba(0, 0, 0, 0.25)',
+      DEFAULT: '0 1px 3px rgba(0, 0, 0, 0.25)',
+      md: '0 1px 3px rgba(0, 0, 0, 0.25)',
+      lg: '0 2px 10px rgba(0, 0, 0, 0.5)',
+      xl: '0 2px 10px rgba(0, 0, 0, 0.5)',
+      '2xl': '0 2px 20px rgba(0, 0, 0, 0.5)',
+    },
     extend: {
       colors: {
-        // Surfaces: dusky plum-grey, darkest to lightest.
-        ink: { 950: '#211a1e', 900: '#2a2226', 850: '#30272c', 800: '#382e33', 700: '#463a40', 600: '#584a51', 500: '#75656d' },
-        // Text greys with the same plum undertone.
-        slate: { 100: '#f3eaee', 200: '#e6dbe0', 300: '#d1c3ca', 400: '#ab9aa2', 500: '#86757d', 600: '#64555c' },
-        white: '#f7f0f3',
+        // Surfaces: osu-web b6 (page) to b1, plus f1 for faint rules.
+        ink: { 950: v('b6'), 900: v('b5'), 850: v('b4'), 800: v('b3'), 700: v('b2'), 600: v('b1'), 500: v('f1') },
+        // Text: c1 (primary) through f1 (faint).
+        slate: { 100: v('c1'), 200: v('c1'), 300: v('c2'), 400: v('f1'), 500: v('b1'), 600: v('d1') },
+        white: v('c1'),
         lab: {
-          pink: '#ff66ab', // links, highlights, active nav
-          rose: '#ff8fc4', // link hover
-          blue: '#3a8fd0', // primary buttons
-          violet: '#a58bd6', // BN role, Level Design
-          sky: '#6cb5e6', // Qualified, Mechanics
-          mint: '#94c76a', // Ranked
-          amber: '#e8b84f', // Pending, stars
-          red: '#e5626b', // NAT, errors
+          pink: v('h1'), // section highlight: links, active nav, chips
+          rose: v('l1'), // highlight hover
+          blue: v('h2'), // btn-osu-big background
+          violet: v('purple-1'),
+          sky: v('blue-1'),
+          mint: v('lime-1'),
+          amber: v('orange-1'),
+          red: v('red-2'),
         },
       },
       fontFamily: {
-        sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
-        mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
+        // Torus is licensed to ppy and can't be redistributed; Nunito is the free stand-in.
+        sans: ['Nunito', 'system-ui', 'sans-serif'],
+        mono: ['Nunito', 'ui-monospace', 'monospace'],
       },
     },
   },

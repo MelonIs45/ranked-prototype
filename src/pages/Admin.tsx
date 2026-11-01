@@ -282,7 +282,6 @@ export function AdminPage() {
   if (!me.isAdmin) return <Empty>The admin panel is for the Lab Admin persona. Switch to it in the header.</Empty>;
   return (
     <div className="space-y-4">
-      <h1 className="h1">Admin</h1>
       <RoleHint hints={{ admin: 'Operator tools for the prototype, not part of the proposal. Config changes apply live to every rule and page.' }} />
       <Card title="Clock">
         <ClockWidget />
