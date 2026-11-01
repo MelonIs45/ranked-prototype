@@ -26,7 +26,7 @@ import {
   TITLE_B,
 } from './words';
 
-export const SEED_VERSION = 4;
+export const SEED_VERSION = 5;
 
 export function emptyState(now: Ms = START_TIME): State {
   return {
@@ -102,7 +102,13 @@ export function createSeed(): State {
       }
     }
   };
-  const colour = () => `hsl(${int(0, 359)} ${int(55, 85)}% ${int(55, 70)}%)`;
+  const AVATAR_TONES = ['#b9805c', '#8fa58a', '#8e9fb4', '#c4a46a', '#a98a85', '#7f9c98', '#b3a48c', '#9a8fa3'];
+  const colour = () => {
+    const h = int(0, 359);
+    int(55, 85);
+    int(55, 70);
+    return AVATAR_TONES[h % AVATAR_TONES.length];
+  };
 
   function makeUser(username: string, o: Partial<User> = {}): User {
     taken.add(username.toLowerCase());
@@ -135,7 +141,7 @@ export function createSeed(): State {
     return u;
   }
 
-  const admin = makeUser('Lab Admin', { isAdmin: true, avatarColor: '#ff66aa', country: '—', pp: 0, ldPp: 0 });
+  const admin = makeUser('Lab Admin', { isAdmin: true, avatarColor: '#ff66ab', country: 'n/a', pp: 0, ldPp: 0 });
 
   const nat: User[] = [];
   const natNames = ['Arbiter', ...Array.from({ length: 7 }, genName)];

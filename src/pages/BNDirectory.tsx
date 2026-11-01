@@ -50,7 +50,7 @@ export function BNDirectoryPage() {
         <span className="ml-auto text-xs muted">{list.length} nominators</span>
       </div>
       {list.length ? (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 md:grid-cols-2">
           {list.map(({ u, p }) => (
             <Card key={u.id}>
               <div className="flex items-start justify-between gap-2">
@@ -70,12 +70,12 @@ export function BNDirectoryPage() {
                   <span key={g} className="chip">{g}</span>
                 ))}
                 {p.skillsets.map((g) => (
-                  <span key={g} className="chip border-lab-violet/40 text-violet-200">{g}</span>
+                  <span key={g} className="chip border-lab-violet/40 text-lab-violet">{g}</span>
                 ))}
               </div>
               {p.requestInstructions && <p className="mt-3 text-sm text-slate-300">{p.requestInstructions}</p>}
               <div className="mt-2 text-xs muted">
-                {s.nominators[u.id]?.allowanceAvailable ?? 0} nominations available · ★ {starWallet(s, u.id).available}
+                {s.nominators[u.id]?.allowanceAvailable ?? 0} nominations available · {starWallet(s, u.id).available} stars
               </div>
             </Card>
           ))}

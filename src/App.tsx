@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { HashRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { HashRouter, Link, Route, Routes, useLocation } from 'react-router-dom';
 import { ActivityDrawer, Header, Toasts, TourPanel } from './components/Shell';
+import { AboutPage } from './pages/About';
 import { AdminPage } from './pages/Admin';
 import { BeatmapPage } from './pages/Beatmap';
 import { BeatmapsPage } from './pages/Beatmaps';
@@ -46,11 +47,18 @@ export function App() {
             <Route path="/spotlight" element={<SpotlightPage />} />
             <Route path="/users/:id" element={<ProfilePage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route path="*" element={<div className="card">Page not found.</div>} />
           </Routes>
         </main>
-        <footer className="border-t border-ink-800 py-4 text-center text-xs text-slate-500">
-          Ranked Lab · Unofficial concept prototype · all users, songs and artists are fictional
+        <footer className="border-t border-ink-800">
+          <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-5 gap-y-1 px-4 py-4 text-xs text-slate-500">
+            <span>Ranked Lab · Unofficial concept prototype · all users, songs and artists are fictional</span>
+            <span className="flex-1" />
+            <Link to="/about" className="text-slate-400 hover:text-white">About</Link>
+            <Link to="/about#terms" className="text-slate-400 hover:text-white">Terms</Link>
+            <Link to="/about#privacy" className="text-slate-400 hover:text-white">Privacy</Link>
+          </div>
         </footer>
       </div>
       <ActivityDrawer />

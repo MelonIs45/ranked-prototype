@@ -5,6 +5,7 @@ import { ActionButton, Card, cx, Empty, Field, MapLink, Meter, Stat, useMeUser }
 import { GENRES, SKILL_TAGS } from '../data/words';
 import {
   accrualIntervalDays,
+  DAY,
   canRespondInvite,
   canSubmitPortfolio,
   effectiveCooldownLevel,
@@ -34,7 +35,7 @@ function ProfileEditor() {
   const toggle = <K extends 'genres' | 'skillsets' | 'categories'>(k: K, v: string) =>
     setDraft((d) => ({ ...d, [k]: (d[k] as string[]).includes(v) ? (d[k] as string[]).filter((x) => x !== v) : [...(d[k] as string[]), v] }));
   return (
-    <Card title="My directory profile" action={<Link to="/bn/directory" className="text-sm">Directory →</Link>}>
+    <Card title="My directory profile" action={<Link to="/bn/directory" className="text-sm">Directory</Link>}>
       <label className="mb-3 flex items-center gap-2 text-sm">
         <input type="checkbox" checked={draft.open} onChange={(e) => setDraft({ ...draft, open: e.target.checked })} /> Open for requests
       </label>
@@ -120,7 +121,7 @@ function NatInviteCard() {
       )}
       {inv.status === 'submitted' && (
         <p className="text-sm">
-          Your candidacy vote is open. <Link to="/votes">See the tally →</Link>
+          Your candidacy vote is open. <Link to="/votes">See the tally</Link>
         </p>
       )}
     </Card>
@@ -159,7 +160,8 @@ export function BNDashboardPage() {
       <h1 className="h1">BN dashboard</h1>
       <RoleHint hints={{ bn: 'Nominations accrue +1 per day up to the cap. Stars return 7 days after you cast them; bonus stars expire.', nat: 'As NAT you also nominate and get 25 stars a week. Your review queue is under NAT.' }} />
       <NatInviteCard key={me.id} />
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="space-y-4">
         <Card title="Nomination allowance">
           <div className="flex items-end gap-2">
             <span className="text-4xl font-bold text-white">{ns.allowanceAvailable}</span>
@@ -190,10 +192,11 @@ export function BNDashboardPage() {
           </p>
           {ns.flagStrikes > 0 && <p className="mt-2 text-sm text-lab-red">Flag-abuse strikes: {ns.flagStrikes}</p>}
         </Card>
+        </div>
         <Card title="Star wallet">
           <div className="flex items-end gap-2">
-            <span className="text-4xl font-bold text-lab-amber">★ {w.available}</span>
-            <span className="mb-1 muted">available</span>
+            <span className="text-4xl font-bold text-lab-amber">{w.available}</span>
+            <span className="mb-1 muted">stars available</span>
           </div>
           <div className="mt-1 text-sm muted">
             {w.availableBase}/{w.weekly} weekly{w.availableBonus ? ` + ${w.availableBonus} bonus` : ''}
@@ -227,7 +230,8 @@ export function BNDashboardPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <Stat label="Nominations, last 90 d" value={noms.filter((n) => n.at > s.now - 90 * DAY).length} sub={`${noms.length} all time`} />
         <Stat label="Season points (main)" value={mainRow?.points ?? 0} sub={mainRow ? `rank #${mainRow.rank}` : 'not ranked yet'} />
         <Stat label="Season points (FA)" value={faRow?.points ?? 0} sub={faRow ? `rank #${faRow.rank}` : 'not ranked yet'} />
         <Stat label="Vouches" value={vouchAt && vouchAt > s.now ? '0 left' : '1 available'} sub={vouchAt && vouchAt > s.now ? `next in ${fmtDuration(vouchAt - s.now)}` : 'Vouch from a user\'s profile'} />
@@ -255,7 +259,7 @@ export function BNDashboardPage() {
               </tbody>
             </table>
           ) : (
-            <Empty>No nominations yet. <Link to="/beatmaps">Find a Pending map →</Link></Empty>
+            <Empty>No nominations yet. <Link to="/beatmaps">Find a Pending map</Link></Empty>
           )}
         </Card>
         <div className="space-y-4">

@@ -25,7 +25,7 @@ export function MapCard({ map, starWindow = 'recent', rank }: { map: Beatmapset;
   return (
     <Link to={`/beatmaps/${map.id}`} className="group block overflow-hidden rounded-xl border border-ink-700 bg-ink-900 text-slate-200 transition-colors hover:border-lab-pink/50 hover:text-slate-200">
       <MapCover map={map} className="h-20" />
-      <div className="-mt-16 flex items-start justify-between gap-2 px-3">
+      <div className="relative -mt-16 flex items-start justify-between gap-2 px-3">
         <div className="flex flex-wrap gap-1">
           <StatusBadge status={map.status} frozen={map.frozen} />
           {map.isFA && <span className="rounded-md bg-lab-amber/90 px-1.5 py-0.5 text-[11px] font-bold text-ink-950">FA</span>}
@@ -43,8 +43,8 @@ export function MapCard({ map, starWindow = 'recent', rank }: { map: Beatmapset;
         <div className="mt-2 grid grid-cols-3 gap-1 text-[11px] leading-tight">
           {showStars ? (
             <div title={`Stars cast in the ${WINDOW_LABEL[starWindow]} window`}>
-              <div className="text-sm font-semibold text-lab-amber">★ {starCount(s, map.id, starWindow)}</div>
-              <div className="muted">{WINDOW_LABEL[starWindow]}</div>
+              <div className="text-sm font-semibold text-lab-amber">{starCount(s, map.id, starWindow)}</div>
+              <div className="muted">stars, {WINDOW_LABEL[starWindow]}</div>
             </div>
           ) : (
             <div>

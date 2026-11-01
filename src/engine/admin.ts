@@ -23,7 +23,7 @@ function crowdUser(ctx: Ctx): Id {
   ctx.s.users[id] = {
     id,
     username: `crowd_${id.replace('crowd', '')}`,
-    avatarColor: '#5a4c78',
+    avatarColor: '#635e56',
     isBN: false,
     isNAT: false,
     isAdmin: false,

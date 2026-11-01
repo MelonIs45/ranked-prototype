@@ -147,7 +147,7 @@ function CrowdSim() {
             <option value="">All ranked/qualified maps (plays, downloads)</option>
             {maps.map((m) => (
               <option key={m.id} value={m.id}>
-                [{m.status}] {m.title} — {m.artist}
+                [{m.status}] {m.title} by {m.artist}
               </option>
             ))}
           </select>

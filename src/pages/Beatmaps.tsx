@@ -116,7 +116,7 @@ export function BeatmapsPage() {
         <div className="flex flex-wrap items-end gap-2">
           {category === 'level_design' && status === 'ranked' && (
             <button className={cx('chip', filters.bestOfLD && 'chip-on')} onClick={() => setFilters((f) => ({ ...f, bestOfLD: !f.bestOfLD || undefined }))}>
-              ★ Best of {s.params.categoryNames.levelDesign}
+              Best of {s.params.categoryNames.levelDesign}
             </button>
           )}
           <button className={cx('chip', filters.faOnly && 'chip-on')} onClick={() => setFilters((f) => ({ ...f, faOnly: !f.faOnly || undefined }))}>

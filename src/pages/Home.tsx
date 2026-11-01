@@ -6,12 +6,12 @@ import { fmtDate, fmtDuration, homeTop, listMaps, seasonFor } from '../engine';
 import { useLabState } from '../store';
 
 const CHANGES = [
-  ['Three nominations, 15 days', 'Any three BNs qualify a map. It then sits 15 days under NAT supervision; flags freeze the clock instead of instant DQs.'],
-  ['Allowance, not activity quotas', 'BNs earn 1 nomination per day (max 5). Too many DQs slow that down. There is no activity requirement to stay a BN.'],
-  ['Mapset Verifier gate', 'Unrankable checks block a normal nomination. Three BNs can sign an override petition with reasons for NAT to approve.'],
-  ['Two ranked categories', 'Mechanics and Level Design both get leaderboards and pp. Stars, new sorts and rewards apply to Level Design.'],
-  ['Shooting stars', 'BNs get 10 stars a week (NAT 25), each returning 7 days after it is cast. Stars drive Best sorts and this home page.'],
-  ['Rewards for good taste', 'Stars give the map\'s nominators leaderboard points each season, and the best maps each month become packs.'],
+  ['Three nominations, then 15 days', 'Any three BNs qualify a map. It then spends 15 days under NAT supervision, and flags pause that clock while NAT review them.'],
+  ['A daily nomination allowance', 'BNs earn one nomination a day, up to five. Too many disqualifications slow the rate. Staying a BN has no activity requirement.'],
+  ['A Mapset Verifier gate', 'Unrankable checks block a normal nomination. Three BNs can sign an override petition with written reasons for NAT to approve or deny.'],
+  ['Two ranked categories', 'Mechanics and Level Design both get leaderboards and pp. Stars, the Best sorts and the rewards apply to Level Design.'],
+  ['Stars from BNs', 'BNs get 10 stars a week and NAT get 25. Each one returns 7 days after it is cast. Stars decide the Best sorts and the top 5 on this page.'],
+  ['Points for nominators', "Each star at a map gives its nominators a leaderboard point for the season, and each month's most-starred maps become packs."],
 ];
 
 export function HomePage() {
@@ -39,7 +39,7 @@ export function HomePage() {
               <p className="text-sm muted">By Best (recent): stars cast in the last {s.params.sort.recentWindowDays} days{s.params.sort.decayOn ? `, halving every ${s.params.sort.decayHalfLifeDays} days` : ''}.</p>
             </div>
             <Link to="/beatmaps" className="text-sm">
-              All beatmaps →
+              All beatmaps
             </Link>
           </div>
           {top.length ? (
@@ -63,7 +63,7 @@ export function HomePage() {
           </div>
           <p className="mt-3 text-sm muted">
             At rollover the top {s.params.leaderboard.badgeCutoff} nominators on each board get a badge and the leaderboards reset.{' '}
-            <Link to="/rewards">Leaderboards →</Link>
+            <Link to="/rewards">See the leaderboards</Link>
           </p>
         </Card>
       </section>
@@ -85,15 +85,18 @@ export function HomePage() {
       </section>
 
       <section>
-        <h2 className="h2 mb-2">What changed</h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {CHANGES.map(([t, d]) => (
-            <div key={t} className="card">
-              <div className="mb-1 font-semibold text-white">{t}</div>
-              <p className="text-sm muted">{d}</p>
-            </div>
+        <h2 className="h2 mb-3">What changes in this proposal</h2>
+        <ol className="grid border-t border-ink-700 lg:grid-cols-2 lg:gap-x-10">
+          {CHANGES.map(([t, d], i) => (
+            <li key={t} className="flex gap-4 border-b border-ink-700 py-3">
+              <span className="w-6 shrink-0 font-mono text-sm text-slate-500">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <div className="font-semibold text-white">{t}</div>
+                <p className="text-sm muted">{d}</p>
+              </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
     </div>
   );

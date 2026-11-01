@@ -78,12 +78,11 @@ export function RoleSwitcher() {
         <span className="hidden sm:inline-flex">
           <RoleBadges user={me} compact />
         </span>
-        <span className="text-slate-500">▾</span>
       </button>
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 z-50 mt-2 w-[min(92vw,360px)] rounded-xl border border-ink-600 bg-ink-900 p-2 shadow-2xl">
+          <div className="absolute right-0 z-50 mt-2 w-[min(92vw,360px)] rounded-xl border border-ink-600 bg-ink-900 p-2">
             <input autoFocus className="input mb-2" placeholder="Search users…" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search users" />
             <div className="max-h-[60vh] overflow-y-auto pr-1">
               {!q && (
@@ -157,18 +156,18 @@ export function Header() {
   const [menu, setMenu] = useState(false);
   const items = NAV.filter((n) => !n.show || n.show(me));
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-700 bg-ink-950/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-ink-700 bg-ink-900">
       <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-2">
         <button className="btn-ghost px-2 lg:hidden" onClick={() => setMenu((x) => !x)} aria-label="Menu">
-          ☰
+          Menu
         </button>
         <Link to="/" className="flex items-center gap-2 font-bold text-white hover:text-white">
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-lab-pink to-lab-violet text-sm text-ink-950">RL</span>
+          <span className="grid h-7 w-7 place-items-center bg-lab-pink font-mono text-xs font-semibold text-ink-950">RL</span>
           <span className="hidden sm:inline">Ranked Lab</span>
         </Link>
         <nav className="hidden flex-1 items-center gap-0.5 lg:flex">
           {items.map((n) => (
-            <NavLink key={n.to} to={n.to} end={n.to === '/' || n.to === '/bn'} className={({ isActive }) => cx('rounded-md px-2 py-1 text-sm', isActive ? 'bg-ink-800 text-white' : 'text-slate-400 hover:text-slate-100')}>
+            <NavLink key={n.to} to={n.to} end={n.to === '/' || n.to === '/bn'} className={({ isActive }) => cx('border-b-2 px-2 py-1 text-sm', isActive ? 'border-lab-pink text-white' : 'border-transparent text-slate-300 hover:text-white')}>
               {n.label}
             </NavLink>
           ))}
@@ -255,7 +254,7 @@ export function ActivityDrawer() {
         <div className="flex items-center justify-between border-b border-ink-700 p-4">
           <h2 className="h2">Activity feed</h2>
           <button className="btn-ghost px-2" onClick={close} aria-label="Close">
-            ✕
+            Close
           </button>
         </div>
         <div className="flex flex-wrap gap-1 border-b border-ink-700 p-3">
@@ -283,22 +282,22 @@ export function Toasts() {
         <div
           key={t.id}
           className={cx(
-            'pointer-events-auto rounded-xl border px-4 py-3 text-sm shadow-2xl',
-            t.kind === 'error' && 'border-lab-red/50 bg-[#2a1420] text-red-100',
-            t.kind === 'success' && 'border-lab-mint/40 bg-[#122522] text-emerald-50',
+            'pointer-events-auto border px-4 py-3 text-sm',
+            t.kind === 'error' && 'border-lab-red/60 bg-[#2a1a16] text-slate-100',
+            t.kind === 'success' && 'border-lab-mint/50 bg-[#1e231a] text-slate-100',
             t.kind === 'info' && 'border-ink-500 bg-ink-800 text-slate-100',
           )}
         >
           <div className="flex items-start gap-2">
-            <span className="mt-px">{t.kind === 'error' ? '⛔' : t.kind === 'success' ? '✓' : 'ℹ'}</span>
+            <span className="mt-px w-14 shrink-0 text-[10px] font-semibold uppercase tracking-wider opacity-70">{t.kind === 'error' ? 'Blocked' : t.kind === 'success' ? 'Done' : 'Note'}</span>
             <span className="flex-1">{t.message}</span>
             <button className="text-slate-400 hover:text-white" onClick={() => dismiss(t.id)} aria-label="Dismiss">
-              ✕
+              Close
             </button>
           </div>
           {t.eventId && (
-            <button className="ml-6 mt-1 text-xs text-lab-rose hover:underline" onClick={() => openDrawer(t.eventId)}>
-              View in activity feed →
+            <button className="ml-16 mt-1 text-xs text-lab-rose hover:underline" onClick={() => openDrawer(t.eventId)}>
+              View in activity feed
             </button>
           )}
         </div>
@@ -318,8 +317,8 @@ export function RoleHint({ hints }: { hints: Partial<Record<'player' | 'mapper' 
   if (!hint) return null;
   const label = { player: 'Player', mapper: 'Mapper', bn: 'BN', nat: 'NAT', admin: 'Admin' }[role];
   return (
-    <div className="mb-4 flex items-start gap-2 rounded-lg border border-lab-violet/30 bg-lab-violet/10 px-3 py-2 text-sm text-violet-100">
-      <span className="mt-px rounded bg-lab-violet/30 px-1.5 text-[10px] font-bold uppercase tracking-wider text-violet-100">{label}</span>
+    <div className="mb-4 flex items-start gap-3 border border-ink-600 bg-ink-900 px-3 py-2 text-sm text-slate-200">
+      <span className="mt-px bg-ink-700 px-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-300">{label}</span>
       <span>{hint}</span>
     </div>
   );
@@ -347,17 +346,17 @@ export function TourPanel() {
     navigate(TOUR[i].route(useLab.getState().state));
   };
   return (
-    <div className="fixed bottom-4 left-4 z-[55] w-[min(92vw,380px)] rounded-2xl border border-lab-pink/40 bg-ink-900/95 p-4 shadow-2xl backdrop-blur">
+    <div className="fixed bottom-4 left-4 z-[55] w-[min(92vw,380px)] rounded-2xl border border-ink-500 bg-ink-900 p-4">
       <div className="mb-1 flex items-center justify-between text-[11px] uppercase tracking-wider text-lab-pink">
         <span>
           Guided tour · {tour.step + 1}/{TOUR.length}
         </span>
         <span className="flex gap-3">
           <button className="text-slate-400 hover:text-white" onClick={() => setMin((x) => !x)} aria-label={min ? 'Expand tour' : 'Minimise tour'}>
-            {min ? '▴' : '▾'}
+            {min ? 'Show' : 'Hide'}
           </button>
           <button className="text-slate-400 hover:text-white" onClick={() => setTour({ active: false, dismissed: true })} aria-label="Close tour">
-            ✕
+            Close
           </button>
         </span>
       </div>
@@ -381,10 +380,10 @@ export function TourPanel() {
         </button>
         <span className="flex-1" />
         <button className="btn-ghost px-2" disabled={tour.step === 0} onClick={() => go(tour.step - 1)}>
-          ←
+          Back
         </button>
         <button className="btn-ghost px-2" disabled={tour.step >= TOUR.length - 1} onClick={() => go(tour.step + 1)}>
-          →
+          Next
         </button>
       </div>
     </div>

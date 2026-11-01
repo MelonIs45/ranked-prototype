@@ -107,7 +107,7 @@ function CaseReview({ c }: { c: FlagCase }) {
         <div className="label">Mapset Verifier</div>
         <IssueList issues={map.mvIssues} />
       </div>
-      <div className="rounded-lg border border-lab-violet/30 bg-lab-violet/10 p-3 text-sm text-violet-100">
+      <div className="border border-ink-600 bg-ink-850 p-3 text-sm text-slate-200">
         Category reminder: give {s.params.categoryNames.mechanics} a wide berth and {s.params.categoryNames.levelDesign} a narrow one. Only DQ for category when the map is clearly in the wrong one.
       </div>
       <Field label="Decision note (required to DQ)">
@@ -143,7 +143,7 @@ function PetitionReview({ p }: { p: OverridePetition }) {
           <CategoryBadge category={map.category} /> mapped by <UserLink id={map.mapperId} />
         </div>
         <div className={cx('mt-1 text-sm', p.deadlineAt && p.deadlineAt < s.now ? 'font-semibold text-lab-red' : 'muted')}>
-          Submitted {p.submittedAt ? fmtDate(p.submittedAt) : '—'} · deadline {p.deadlineAt ? `${fmtDate(p.deadlineAt)} (${fmtDuration(p.deadlineAt - s.now)} left)` : '—'}
+          Submitted {p.submittedAt ? fmtDate(p.submittedAt) : 'not yet'} · deadline {p.deadlineAt ? `${fmtDate(p.deadlineAt)} (${fmtDuration(p.deadlineAt - s.now)} left)` : 'not set'}
         </div>
       </div>
       <div>
@@ -244,7 +244,7 @@ export function NATQueuePage() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <Card title="My outstanding votes" action={<Link to="/votes" className="text-sm">Votes →</Link>}>
+        <Card title="My outstanding votes" action={<Link to="/votes" className="text-sm">All votes</Link>}>
           {myVotes.length + myRemovals.length === 0 ? (
             <div className="text-sm text-lab-mint">You're up to date.</div>
           ) : (

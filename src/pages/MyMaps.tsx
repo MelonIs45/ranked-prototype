@@ -81,7 +81,7 @@ function CreateMapForm({ onDone }: { onDone: () => void }) {
               <div className="flex flex-wrap items-center gap-2">
                 <input className="input w-32" value={d.name} onChange={(e) => upd(i, { name: e.target.value })} aria-label="Difficulty name" />
                 <input type="number" step="0.1" min="0" className="input w-20" value={d.starRating} onChange={(e) => upd(i, { starRating: Number(e.target.value) })} aria-label="Star rating" />
-                <span className="text-xs muted">★</span>
+                <span className="text-xs muted">SR</span>
                 {i === 0 && (
                   <>
                     <input type="number" min="30" className="input w-20" value={d.lengthSec} onChange={(e) => upd(0, { lengthSec: Number(e.target.value) })} aria-label="Length in seconds" />

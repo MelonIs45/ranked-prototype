@@ -93,7 +93,8 @@ export function ProfilePage() {
         <Stat label="Simulated plays" value={fmtNum(plays.length)} sub={`${fmtNum(plays.reduce((a, p) => a + p.durationSec, 0) / 3600, 1)} h played`} />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="space-y-4">
         <Card title="Mapper badge">
           <div className="flex items-end gap-2">
             <span className="text-3xl font-bold text-white">{tier.tier ? `Tier ${tier.tier}` : 'No tier yet'}</span>
@@ -107,9 +108,9 @@ export function ProfilePage() {
         <Card title="Badges">
           {badges.length || natTier ? (
             <ul className="flex flex-wrap gap-1.5">
-              {natTier > 0 && <li className="chip border-lab-red/50 text-red-200">NAT {natTier}-year ({natTenureYears(u, s.now).toFixed(1)} y)</li>}
+              {natTier > 0 && <li className="chip border-lab-red/50 text-lab-red">NAT {natTier}-year ({natTenureYears(u, s.now).toFixed(1)} y)</li>}
               {badges.map((b) => (
-                <li key={b.id} className={cx('chip', b.type === 'mapper_tier' && 'border-lab-amber/50 text-amber-200', b.type.startsWith('bn_top') && 'border-lab-violet/50 text-violet-200')}>
+                <li key={b.id} className={cx('chip', b.type === 'mapper_tier' && 'border-lab-amber/50 text-lab-amber', b.type.startsWith('bn_top') && 'border-lab-violet/50 text-lab-violet')}>
                   {BADGE_LABEL[b.type]}
                   {b.tier ? ` ${b.tier}` : ''}
                   {b.season ? ` · ${b.season.replace('-S', ' Q')}` : ''}
@@ -121,6 +122,7 @@ export function ProfilePage() {
             <div className="text-sm muted">No badges yet.</div>
           )}
         </Card>
+        </div>
         {nom ? (
           <Card title="Nominator">
             <div className="grid grid-cols-2 gap-2">
@@ -130,11 +132,11 @@ export function ProfilePage() {
               <Stat label="Ratio (180 d)" value={nom.ratio.toFixed(2)} sub={`${nom.rankedCount} ranked / ${nom.dqs} DQ${nom.ratioEligible ? '' : ' · <5 noms'}`} />
             </div>
             <div className="mt-2 text-xs muted">
-              {ns?.allowanceAvailable ?? 0} nominations available · ★ {starWallet(s, u.id).available} stars
+              {ns?.allowanceAvailable ?? 0} nominations available · {starWallet(s, u.id).available} stars
             </div>
           </Card>
         ) : criteria ? (
-          <Card title="BN eligibility" action={me.id === u.id ? <Link to="/bn/apply" className="text-sm">Apply →</Link> : undefined}>
+          <Card title="BN eligibility" action={me.id === u.id ? <Link to="/bn/apply" className="text-sm">Apply</Link> : undefined}>
             <ul className="space-y-1 text-sm">
               {criteria.map((c) => (
                 <li key={c.key} className="flex justify-between gap-2">

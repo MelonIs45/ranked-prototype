@@ -61,7 +61,7 @@ import {
 import { useLab, useLabState } from '../store';
 
 export function IssueList({ issues }: { issues: MVIssue[] }) {
-  if (!issues.length) return <div className="text-sm text-lab-mint">✓ No issues found.</div>;
+  if (!issues.length) return <div className="text-sm text-lab-mint">No issues found.</div>;
   return (
     <ul className="space-y-1.5">
       {issues.map((i, k) => (
@@ -143,7 +143,7 @@ function ActionBar({ map }: { map: Beatmapset }) {
       const w = starWallet(s, me.id);
       b.push(
         <ActionButton key="s" check={canCastStar(s, me.id, map.id)} onClick={() => dispatch(castStar, { mapId: map.id })}>
-          ★ Shoot star <span className="text-xs opacity-70">({w.available} left)</span>
+          Shoot star <span className="text-xs opacity-70">({w.available} left)</span>
         </ActionButton>,
       );
     }
@@ -176,15 +176,15 @@ function ActionBar({ map }: { map: Beatmapset }) {
             ))}
           </select>
           <ActionButton variant="secondary" check={canPlay(s, me.id, map.id)} onClick={() => dispatch(play, { mapId: map.id, diffName: diff })}>
-            ▶ Play
+            Play
           </ActionButton>
         </span>,
         <ActionButton key="dl" variant="secondary" check={canDownload(s, me.id, map.id)} onClick={() => dispatch(download, { mapId: map.id })}>
-          ⤓ Download
+          Download
         </ActionButton>,
       );
     }
-    if (map.status === 'qualified') b.push(<ActionButton key="rep" variant="ghost" check={canReport(s, me.id, map.id)} onClick={() => open('report')}>⚑ Report</ActionButton>);
+    if (map.status === 'qualified') b.push(<ActionButton key="rep" variant="ghost" check={canReport(s, me.id, map.id)} onClick={() => open('report')}>Report</ActionButton>);
     if (b.length) groups.push({ label: 'Player', buttons: b });
   }
 
@@ -336,7 +336,7 @@ function timeline(s: State, map: Beatmapset) {
   const playerFlags = flags.filter((f) => f.source === 'player');
   if (playerFlags.length) items.push({ at: playerFlags[playerFlags.length - 1].at, label: `${playerFlags.length} player reports (latest)`, tone: 'text-lab-amber' });
   for (const c of Object.values(s.cases).filter((x) => x.mapId === map.id)) {
-    items.push({ at: c.openedAt, label: 'NAT case opened; map frozen ❄', tone: 'text-lab-sky' });
+    items.push({ at: c.openedAt, label: 'NAT case opened; map frozen', tone: 'text-lab-sky' });
     if (c.decidedAt) items.push({ at: c.decidedAt, label: <>Case {c.outcome?.replace('_', ' ')} by {c.reviewerId ? u(c.reviewerId) : 'system'}</>, tone: 'text-lab-sky' });
   }
   for (const d of Object.values(s.dqs).filter((x) => x.mapId === map.id)) items.push({ at: d.at, label: <>Disqualified by {u(d.byUserId)}: {d.reason}</>, tone: 'text-lab-red' });
@@ -365,12 +365,12 @@ function StarHistory({ map }: { map: Beatmapset }) {
     <div className="h-44">
       <ResponsiveContainer>
         <AreaChart data={data} margin={{ left: -20, right: 8, top: 6 }}>
-          <CartesianGrid stroke="#2f2542" vertical={false} />
-          <XAxis dataKey="day" tick={{ fill: '#94a3b8', fontSize: 11 }} minTickGap={24} />
-          <YAxis allowDecimals={false} tick={{ fill: '#94a3b8', fontSize: 11 }} />
-          <Tooltip contentStyle={{ background: '#1c1628', border: '1px solid #3d3155', borderRadius: 8 }} labelStyle={{ color: '#e2e8f0' }} />
-          <Area type="monotone" dataKey="total" name="All-time stars" stroke="#ffc56b" fill="#ffc56b33" strokeWidth={2} />
-          <Area type="monotone" dataKey="recent" name={`Last ${s.params.sort.recentWindowDays} d`} stroke="#ff66aa" fill="#ff66aa22" strokeWidth={2} />
+          <CartesianGrid stroke="#463a40" vertical={false} />
+          <XAxis dataKey="day" tick={{ fill: '#ab9aa2', fontSize: 11 }} minTickGap={24} />
+          <YAxis allowDecimals={false} tick={{ fill: '#ab9aa2', fontSize: 11 }} />
+          <Tooltip contentStyle={{ background: '#30272c', border: '1px solid #584a51', borderRadius: 8 }} labelStyle={{ color: '#e6dbe0' }} />
+          <Area type="monotone" dataKey="total" name="All-time stars" stroke="#e8b84f" fill="#e8b84f22" strokeWidth={2} />
+          <Area type="monotone" dataKey="recent" name={`Last ${s.params.sort.recentWindowDays} d`} stroke="#ff66ab" fill="#ff66ab1a" strokeWidth={2} />
         </AreaChart>
       </ResponsiveContainer>
     </div>
@@ -438,9 +438,9 @@ export function BeatmapPage() {
       {map.status === 'qualified' &&
         (map.frozen ? (
           <div className="rounded-xl border border-lab-sky/40 bg-lab-sky/10 p-4">
-            <div className="font-semibold text-lab-sky">❄ Frozen by an open NAT case</div>
+            <div className="font-semibold text-lab-sky">Frozen by an open NAT case</div>
             <div className="text-sm text-slate-300">
-              The qualified clock is paused at day {qualifiedDaysElapsed(map).toFixed(1)} of {s.params.qualifiedDays}. NAT deadline: {c ? fmtDateTime(c.deadlineAt) : '—'}
+              The qualified clock is paused at day {qualifiedDaysElapsed(map).toFixed(1)} of {s.params.qualifiedDays}. NAT deadline: {c ? fmtDateTime(c.deadlineAt) : 'not set'}
               {c?.overdue && <span className="ml-1 font-semibold text-lab-red">(overdue)</span>}.
             </div>
           </div>
@@ -472,11 +472,11 @@ export function BeatmapPage() {
                 {map.difficulties.map((d) => (
                   <tr key={d.name} className="table-row">
                     <td data-label="Difficulty" className="py-1.5 font-medium text-white">{d.name}</td>
-                    <td data-label="Star rating" className="py-1.5">{d.starRating.toFixed(2)}★</td>
+                    <td data-label="Star rating" className="py-1.5">{d.starRating.toFixed(2)}</td>
                     <td data-label="Length" className="py-1.5">{Math.floor(d.lengthSec / 60)}:{String(d.lengthSec % 60).padStart(2, '0')}</td>
                     <td data-label="Skill tags" className="py-1.5">
                       <span className="flex flex-wrap justify-end gap-1 sm:justify-start">
-                        {d.skillTags.length ? d.skillTags.map((t) => <span key={t} className="chip">{t}</span>) : <span className="muted">—</span>}
+                        {d.skillTags.length ? d.skillTags.map((t) => <span key={t} className="chip">{t}</span>) : <span className="muted">none</span>}
                       </span>
                     </td>
                   </tr>
@@ -486,7 +486,7 @@ export function BeatmapPage() {
           </Card>
 
           {showStars && (
-            <Card title={<>★ Stars <span className="text-sm font-normal muted">· {starCount(s, map.id, 'recent')} in the last {s.params.sort.recentWindowDays} days, {starCount(s, map.id, 'season')} this season, {starCount(s, map.id, 'all')} all time</span></>}>
+            <Card title={<>Stars <span className="text-sm font-normal muted">· {starCount(s, map.id, 'recent')} in the last {s.params.sort.recentWindowDays} days, {starCount(s, map.id, 'season')} this season, {starCount(s, map.id, 'all')} all time</span></>}>
               <StarHistory map={map} />
             </Card>
           )}
@@ -527,7 +527,7 @@ export function BeatmapPage() {
                         <td data-label="Player" className="py-1.5"><UserLink id={p.userId} /></td>
                         <td data-label="Score" className="py-1.5 font-mono">{fmtNum(p.score)}</td>
                         <td data-label="Accuracy" className="py-1.5">{p.accuracy.toFixed(2)}%</td>
-                        <td data-label="pp" className="py-1.5">{map.status === 'ranked' ? p.pp : '—'}</td>
+                        <td data-label="pp" className="py-1.5">{map.status === 'ranked' ? p.pp : 'n/a'}</td>
                         <td data-label="Diff" className="py-1.5 muted">{p.diffName}</td>
                       </tr>
                     ))}

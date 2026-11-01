@@ -29,7 +29,7 @@ export const TOUR: TourStep[] = [
   {
     title: "PastelWaltz's unique map",
     body: () =>
-      'Glasshouse Summer is a Western pop Level Design map with a 7.2★ difficulty built on 1/8 sliderstreams: the kind of "unique map" that struggles to find nominators. It is Pending with 1 of 3 nominations.',
+      'Glasshouse Summer is a Western pop Level Design map with a 7.2-star difficulty built on 1/8 sliderstreams: the kind of "unique map" that struggles to find nominators. It is Pending with 1 of 3 nominations.',
     route: (s) => `/beatmaps/${tourMapId(s)}`,
     doLabel: 'Switch to PastelWaltz',
     run: (api) => api.setUser(byName(api.state(), 'PastelWaltz').id),

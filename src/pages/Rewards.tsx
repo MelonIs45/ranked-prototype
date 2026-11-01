@@ -5,7 +5,7 @@ import { Card, cx, Empty, Tabs, UserLink, useMeUser } from '../components/ui';
 import { DAY, fmtDate, leaderboard, nominatorIdsOf, seasonFor, type LeaderRow, type Season } from '../engine';
 import { useLabState } from '../store';
 
-const LINE_COLORS = ['#ff66aa', '#a37cff', '#66ccff', '#6fe0b0', '#ffc56b'];
+const LINE_COLORS = ['#ff66ab', '#3a8fd0', '#a58bd6', '#94c76a', '#e8b84f'];
 
 function Board({ rows, cutoff }: { rows: LeaderRow[]; cutoff: number }) {
   const me = useMeUser();
@@ -58,10 +58,10 @@ function Trend({ season, board }: { season: Season; board: 'main' | 'fa' }) {
     <div className="h-56">
       <ResponsiveContainer>
         <LineChart data={data.out} margin={{ left: -20, right: 8, top: 6 }}>
-          <CartesianGrid stroke="#2f2542" vertical={false} />
-          <XAxis dataKey="day" tick={{ fill: '#94a3b8', fontSize: 11 }} minTickGap={24} />
-          <YAxis allowDecimals={false} tick={{ fill: '#94a3b8', fontSize: 11 }} />
-          <Tooltip contentStyle={{ background: '#1c1628', border: '1px solid #3d3155', borderRadius: 8 }} />
+          <CartesianGrid stroke="#463a40" vertical={false} />
+          <XAxis dataKey="day" tick={{ fill: '#ab9aa2', fontSize: 11 }} minTickGap={24} />
+          <YAxis allowDecimals={false} tick={{ fill: '#ab9aa2', fontSize: 11 }} />
+          <Tooltip contentStyle={{ background: '#30272c', border: '1px solid #584a51', borderRadius: 8 }} />
           <Legend wrapperStyle={{ fontSize: 12 }} />
           {data.names.map((n, i) => (
             <Line key={n} type="stepAfter" dataKey={n} stroke={LINE_COLORS[i]} dot={false} strokeWidth={2} />

@@ -24,7 +24,7 @@ function Playlist({ season, live }: { season: Season; live: boolean }) {
           <ul className="mt-3 space-y-1">
             {list.map((m) => (
               <li key={m.id} className="flex items-center gap-2 text-sm">
-                <span className={cx('w-4', pr.clearedIds.has(m.id) ? 'text-lab-mint' : 'text-slate-600')}>{pr.clearedIds.has(m.id) ? '✓' : '○'}</span>
+                <span className={cx('w-16 shrink-0 text-[10px] font-semibold uppercase tracking-wider', pr.clearedIds.has(m.id) ? 'text-lab-mint' : 'text-slate-500')}>{pr.clearedIds.has(m.id) ? 'Cleared' : 'Not yet'}</span>
                 <MapLink map={m} className="truncate" />
               </li>
             ))}

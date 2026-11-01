@@ -53,7 +53,7 @@ function Result({ appId }: { appId: string }) {
       <div className={cx('mb-3 text-3xl font-bold', passed ? 'text-lab-mint' : 'text-lab-red')}>{Math.round((app.testScore ?? 0) * 100)}%</div>
       {passed ? (
         <p className="mb-3 text-sm">
-          You start with {s.params.newBnAllowance} nomination and an empty directory profile. <Link to="/bn">Open the BN dashboard →</Link>
+          You start with {s.params.newBnAllowance} nomination and an empty directory profile. <Link to="/bn">Open the BN dashboard</Link>
         </p>
       ) : (
         <p className="mb-3 text-sm muted">You can retry {s.params.bnTest.retryDays} days after this attempt.</p>
@@ -64,7 +64,7 @@ function Result({ appId }: { appId: string }) {
           return (
             <li key={q.id} className="rounded-lg bg-ink-850 p-2 text-sm">
               <div className="font-medium text-white">
-                <span className={right ? 'text-lab-mint' : 'text-lab-red'}>{right ? '✓' : '✗'}</span> {q.prompt}
+                <span className={cx('mr-1 text-[10px] font-semibold uppercase tracking-wider', right ? 'text-lab-mint' : 'text-lab-red')}>{right ? 'Correct' : 'Wrong'}</span> {q.prompt}
               </div>
               {!right && <div className="text-xs text-lab-red">Your answer: {q.options[app.answers?.[i] ?? 0]}</div>}
               <div className="text-xs muted">
@@ -104,7 +104,7 @@ export function BNApplyPage() {
                 {criteria.map((c) => (
                   <li key={c.key} className={cx('flex items-center justify-between gap-3 rounded-lg px-3 py-2', c.met ? 'bg-lab-mint/10' : 'bg-ink-850')}>
                     <span className="flex items-center gap-2 text-sm">
-                      <span className={c.met ? 'text-lab-mint' : 'text-slate-600'}>{c.met ? '●' : '○'}</span>
+                      <span className={cx('w-14 shrink-0 text-[10px] font-semibold uppercase tracking-wider', c.met ? 'text-lab-mint' : 'text-slate-500')}>{c.met ? 'Met' : 'Not met'}</span>
                       {c.label}
                     </span>
                     <span className={cx('font-mono text-sm', c.met ? 'text-lab-mint' : 'text-slate-300')}>

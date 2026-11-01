@@ -12,7 +12,7 @@ function PackList({ pack }: { pack: Pack }) {
         <li key={id} className="flex items-center gap-2 text-sm">
           <span className="w-5 text-right font-mono text-slate-500">{i + 1}</span>
           <MapLink map={s.maps[id]} className="min-w-0 flex-1 truncate" />
-          <span className="text-lab-amber">★ {pack.starTotals[id]}</span>
+          <span className="text-lab-amber">{pack.starTotals[id]} stars</span>
         </li>
       ))}
     </ol>

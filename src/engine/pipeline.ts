@@ -30,7 +30,7 @@ export function newNominatorState(userId: Id, now: Ms, allowance: number): Nomin
 }
 
 export const name = (s: S, id: Id) => s.users[id]?.username ?? 'Unknown';
-export const mapLabel = (m: Beatmapset) => `${m.artist} — ${m.title}`;
+export const mapLabel = (m: Beatmapset) => `${m.title} (${m.artist})`;
 
 // ---------------------------------------------------------------------------
 // Checks shared by engine and UI

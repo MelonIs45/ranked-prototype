@@ -67,7 +67,7 @@ export function StatusBadge({ status, frozen }: { status: MapStatus; frozen?: bo
   return (
     <span className={cx('inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide', statusColors[status])}>
       {status === 'wip' ? 'WIP' : status}
-      {frozen && <span title="Frozen by an open NAT case">❄</span>}
+      {frozen && <span title="Frozen by an open NAT case">· frozen</span>}
     </span>
   );
 }
@@ -76,7 +76,7 @@ export function CategoryBadge({ category }: { category: Category | null }) {
   const s = useLabState();
   if (!category) return <span className="chip">No category</span>;
   return (
-    <span className={cx('inline-flex items-center rounded-md px-1.5 py-0.5 text-[11px] font-semibold', category === 'level_design' ? 'bg-lab-violet text-ink-950' : 'bg-lab-sky text-ink-950')}>
+    <span className={cx('inline-flex shrink-0 items-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[11px] font-semibold', category === 'level_design' ? 'bg-lab-violet text-ink-950' : 'bg-lab-sky text-ink-950')}>
       {categoryName(s.params, category)}
     </span>
   );
@@ -162,7 +162,7 @@ export function ActionButton({
         {children}
       </button>
       {blocked && (
-        <span role="tooltip" className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 hidden w-60 -translate-x-1/2 rounded-lg border border-ink-600 bg-ink-800 px-3 py-2 text-xs text-slate-200 shadow-xl group-hover:block">
+        <span role="tooltip" className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 hidden w-60 -translate-x-1/2 rounded-lg border border-ink-600 bg-ink-800 px-3 py-2 text-xs text-slate-200 group-hover:block">
           {blocked}
         </span>
       )}
@@ -186,13 +186,13 @@ export function Modal({ open, onClose, title, children, wide }: { open: boolean;
         ref={ref}
         role="dialog"
         aria-modal
-        className={cx('max-h-[92vh] w-full overflow-y-auto rounded-t-2xl border border-ink-600 bg-ink-900 p-5 shadow-2xl sm:rounded-2xl', wide ? 'sm:max-w-2xl' : 'sm:max-w-lg')}
+        className={cx('max-h-[92vh] w-full overflow-y-auto border border-ink-600 bg-ink-900 p-5', wide ? 'sm:max-w-2xl' : 'sm:max-w-lg')}
         onMouseDown={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-start justify-between gap-4">
           <h2 className="h2">{title}</h2>
           <button className="btn-ghost -mr-2 -mt-1 px-2" onClick={onClose} aria-label="Close">
-            ✕
+            Close
           </button>
         </div>
         {children}
@@ -223,19 +223,15 @@ export function Tabs<T extends string>({ value, onChange, options }: { value: T;
   );
 }
 
-/** Generated cover art: a gradient seeded from the map id. */
+/** Generated cover: one flat, muted tone per map plus its id in small mono type. */
+const COVER_TONES = ['#4a3442', '#3b3550', '#2f4256', '#4d3a3a', '#3d4a3c', '#523a4c', '#41394e', '#33464c'];
+
 export function MapCover({ map, className }: { map: Beatmapset; className?: string }) {
   let h = 0;
   for (const c of map.id + map.title) h = (h * 31 + c.charCodeAt(0)) >>> 0;
-  const a = h % 360;
-  const b = (a + 40 + (h % 80)) % 360;
   return (
-    <div
-      className={cx('relative overflow-hidden', className)}
-      style={{ background: `linear-gradient(135deg, hsl(${a} 70% 45%), hsl(${b} 65% 30%))` }}
-      aria-hidden
-    >
-      <div className="absolute inset-0 opacity-30" style={{ background: `radial-gradient(circle at ${20 + (h % 60)}% ${30 + (h % 40)}%, rgba(255,255,255,.6), transparent 45%)` }} />
+    <div className={cx('relative overflow-hidden border-b border-ink-700', className)} style={{ background: COVER_TONES[h % COVER_TONES.length] }} aria-hidden>
+      <span className="absolute bottom-1.5 right-2 font-mono text-[10px] uppercase tracking-widest text-white/40">#{map.id.replace(/^m/, '')}</span>
     </div>
   );
 }
@@ -271,7 +267,7 @@ export function fmtCompact(n: number) {
 }
 
 export function mapTitle(m: Beatmapset) {
-  return `${m.artist} — ${m.title}`;
+  return `${m.title} (${m.artist})`;
 }
 
 export function MapLink({ map, className }: { map: Beatmapset | undefined; className?: string }) {
